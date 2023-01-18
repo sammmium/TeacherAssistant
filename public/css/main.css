@@ -1,0 +1,13 @@
+/* Dashboard */
+
+.label {
+    text-align: right;
+}
+.field {
+    text-align: left;
+}
+
+/* School */
+#input_school_name {
+    width: 100%;
+}
