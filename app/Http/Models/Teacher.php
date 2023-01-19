@@ -2,10 +2,23 @@
 
 namespace App\Http\Models;
 
+use App\Http\Interfaces\TeacherInterface;
 use Illuminate\Support\Facades\DB;
 
-class Teacher extends TEI
+class Teacher extends TEI implements TeacherInterface
 {
+    public function getDataItem(): array
+    {
+        // TODO: Implement getDataItem() method.
+        return [];
+    }
+
+    public function getDataList(): array
+    {
+        // TODO: Implement getDataList() method.
+        return [];
+    }
+
     public function getTeacher(int $userId): array
     {
         $sql = "

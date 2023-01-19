@@ -2,9 +2,17 @@
 
 namespace App\Http\Models;
 
-class EducationalInstitution extends TEI
+use App\Http\Interfaces\EducationalInstitutionInterface;
+
+class EducationalInstitution extends TEI implements EducationalInstitutionInterface
 {
-    public function getSchoolList(): array
+    public function getDataItem(): array
+    {
+        // TODO: Implement getSchoolItem() method.
+        return [];
+    }
+
+    public function getDataList(): array
     {
         // todo сделать выборку списка школ
         return [];
