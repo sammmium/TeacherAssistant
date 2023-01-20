@@ -6,27 +6,34 @@ use App\Http\Interfaces\EducationalInstitutionInterface;
 
 class EducationalInstitution extends TEI implements EducationalInstitutionInterface
 {
-    public function getDataItem(): array
+    public function getEducationalInstitution(int $educationalInstitutionId = null): array
     {
-        // TODO: Implement getSchoolItem() method.
-        return [];
+        if (is_null($educationalInstitutionId)) {
+            return [];
+        }
+
+        $sql = "
+            select *
+            from educational_institutions
+            where id = :eId
+            limit 1
+        ";
+        $params = ['eId' => $educationalInstitutionId];
+        $rawData = $this->getRawData($sql, $params);
+
+        return $this->getPreparedData($rawData);
     }
 
-    public function getDataList(): array
+    public function getEducationalInstitutionList(): array
     {
-        // todo сделать выборку списка школ
-        return [];
-    }
+        $sql = "
+            select *
+            from educational_institutions
+            order by asc
+            limit 50
+        ";
+        $rawData = $this->getRawData($sql);
 
-    public function searchSchool(string $subString): array
-    {
-        // todo сделать поиск школы по вхождению подстроки
-        return [];
-    }
-
-    public function hasBaseData(): bool
-    {
-        // TODO: Implement hasBaseData() method.
-        return true;
+        return $this->getPreparedData($rawData);
     }
 }

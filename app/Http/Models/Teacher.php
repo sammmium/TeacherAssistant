@@ -7,18 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class Teacher extends TEI implements TeacherInterface
 {
-    public function getDataItem(): array
-    {
-        // TODO: Implement getDataItem() method.
-        return [];
-    }
-
-    public function getDataList(): array
-    {
-        // TODO: Implement getDataList() method.
-        return [];
-    }
-
     public function getTeacher(int $userId): array
     {
         $sql = "
@@ -27,11 +15,11 @@ class Teacher extends TEI implements TeacherInterface
             where user_id = :userId
             limit 1";
         $params = ['userId' => $userId];
-        $rawData = $this->getRawRow($sql, $params);
+        $rawData = $this->getRawData($sql, $params);
         return $this->getPreparedData($rawData);
     }
 
-    public function getSchool(int $userId): array
+    public function getEducationalInstitution(int $userId): array
     {
         $sql = "
             select *
@@ -44,14 +32,20 @@ class Teacher extends TEI implements TeacherInterface
             limit 1
         ";
         $params = ['userId' => $userId];
-        $rawData = $this->getRawRow($sql, $params);
+        $rawData = $this->getRawData($sql, $params);
         return $this->getPreparedData($rawData);
     }
 
-    public function getGroups(int $userId): array
+    public function getGroupList(int $userId): array
     {
+        // TODO: Implement getGroupList() method.
+        return [];
+    }
 
 
+    public function getGroupMembersList(int $groupId): array
+    {
+        // TODO: Implement getGroupMembersList() method.
         return [];
     }
 }

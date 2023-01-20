@@ -32,24 +32,8 @@ class HomeController extends Controller
         $educationalInstitution = new EducationalInstitution();
         $core = new CoreData($user, $teacher, $educationalInstitution);
 
-        var_dump($core->getDataItem());exit;
-//        $tei = new Teacher();
-//        $res = $tei->getTeacher(2);
-//        $sch = $tei->getSchool(1);
+        var_dump($core->getCoreData());exit;
 
-
-//        var_dump($user);exit;
-
-
-
-//        var_dump($res, $sch);exit;
-
-//        $school = new EducationalInstitution();
-//        if (!$school->hasBaseData()) {
-//            redirect('/school/add');
-//            exit;
-//        }
-        //
         // return view('home', ['school' => ['name' => 'Gymnasia 2']]);
         return view('home');
     }

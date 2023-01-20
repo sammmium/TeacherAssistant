@@ -9,13 +9,13 @@ use \Illuminate\Database\Eloquent\Model;
 class BaseModel extends Model
 {
     /**
-     * Получение необработанного результата выборки одной строки
+     * Получение необработанного результата выборки данных
      *
      * @param string $sql
      * @param array $params
      * @return array
      */
-    protected function getRawRow(string $sql, array $params)
+    protected function getRawData(string $sql, array $params = []): array
     {
         return DB::select($sql, $params);
     }
@@ -25,9 +25,10 @@ class BaseModel extends Model
      * ассоциативных массивов или в один ассоциативный массив.
      *
      * @param $rawData
-     * @return array|mixed
+     * @param bool $list
+     * @return array
      */
-    protected function getPreparedData($rawData, bool $list = false)
+    protected function getPreparedData($rawData, bool $list = false): array
     {
         if (!empty($rawData)) {
             $result = [];
@@ -47,7 +48,7 @@ class BaseModel extends Model
      * @param $item
      * @return array
      */
-    protected function getPreparedItem($item)
+    protected function getPreparedItem($item): array
     {
         $result = [];
         foreach ($item as $key => $value) {

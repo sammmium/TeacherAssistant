@@ -2,6 +2,7 @@
 
 namespace App\Http\Models;
 
+use App\Http\Entities\Core;
 use App\Http\Interfaces\CoreInterface;
 use App\Http\Interfaces\EducationalInstitutionInterface as EducationalInstitution;
 use App\Http\Interfaces\TeacherInterface as Teacher;
@@ -9,6 +10,8 @@ use App\Http\Interfaces\TeacherInterface as Teacher;
 
 class CoreData implements CoreInterface
 {
+    protected $core;
+
     protected $user;
 
     protected $educationalInstitution;
@@ -17,39 +20,35 @@ class CoreData implements CoreInterface
 
     public function __construct($user, Teacher $teacher, EducationalInstitution $educationalInstitution)
     {
-        $this->user = $user;
+        $this->prepareUserData($user);
         $this->educationalInstitution = $educationalInstitution;
         $this->teacher = $teacher;
+        $this->core = new Core();
     }
 
-    public function getDataItem(): array
+    private function prepareUserData($user): void
     {
-        return ['data from core'];
-        // TODO: Implement getDataItem() method.
-        return [];
+        $this->user['id'] = $user->id;
+        $this->user['name'] = $user->name;
+        $this->user['email'] = $user->email;
     }
 
-    public function getDataList(): array
+    public function getCoreData(): array
     {
-        // TODO: Implement getDataList() method.
-        return [];
+        $this->prepareCoreData();
+        return $this->core->getCore();
     }
 
-    /*
-     array (size=7)
-      +'id' => int 2
-      'first_name' => string 'Евгений' (length=14)
-      'last_name' => string 'Самойлов' (length=16)
-      'user_id' => int 2
-      'role_id' => int 1
-      'subject_id' => int 1
-      +'educational_institution_id' => int 1
+    private function prepareCoreData(): void
+    {
+        $this->core->set('teacher',
+            $this->teacher->getTeacher($this->user['id'])
+        );
 
-    array (size=5)
-      'id' => int 1
-      'full_name' => string 'Гимназия 2' (length=18)
-      'short_name' => string 'Г2' (length=3)
-      'address' => string 'Минск' (length=10)
-      'city_id' => int 1
-     */
+        $this->core->set('educationalInstitution',
+            $this->educationalInstitution->getEducationalInstitution(
+                $this->core->get('teacher', 'educational_institution_id')
+            )
+        );
+    }
 }
