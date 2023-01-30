@@ -11,3 +11,88 @@
 #input_school_name {
     width: 100%;
 }
+
+.search {
+    display: flex;
+    flex-direction: column;
+}
+.search-title {
+    display: flex;
+    justify-content: center;
+}
+.search-form {
+    display: flex;
+    justify-content: center;
+}
+
+
+
+
+
+
+.nav-item {
+    border: 1px solid #98e1b7;
+    background-color: #d6e9f8;
+    padding: 5px 10px;
+    width: 200px;
+    display: flex;
+    margin-right: 5px;
+}
+.nav-item:last-child {
+    margin-right: 0;
+}
+
+.nav-item a {
+    flex: 1;
+    text-decoration: none;
+    color: #343a40;
+    text-align: center;
+}
+
+.nav-item:hover {
+    background-color: #98e1b7;
+}
+
+.links-container {
+    display: flex;
+    justify-content: left;
+    margin: 10px 0;
+    width: 100%;
+    text-align: center;
+}
+
+.links-container a {
+    border: 1px solid #98e1b7;
+    margin-right: 5px;
+    padding: 5px 10px;
+    width: 300px;
+    text-decoration: none;
+    background-color: #d6e9f8;
+    color: #343a40;
+}
+
+.links-container a:hover {
+    background-color: #98e1b7;
+}
+
+.selected-button {
+    background-color: #98e1b7;
+}
+
+.view-data {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

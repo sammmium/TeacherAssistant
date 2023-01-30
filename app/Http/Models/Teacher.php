@@ -7,6 +7,19 @@ use Illuminate\Support\Facades\DB;
 
 class Teacher extends TEI implements TeacherInterface
 {
+    protected $table = 'teachers';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'user_id',
+        'job_title',
+        'subject_id',
+        'educational_institution_id'
+    ];
+
     public function getTeacher(int $userId): array
     {
         $sql = "
@@ -19,22 +32,36 @@ class Teacher extends TEI implements TeacherInterface
         return $this->getPreparedData($rawData);
     }
 
-    public function getEducationalInstitution(int $userId): array
+    public function check(int $userId = null): bool
     {
-        $sql = "
-            select *
-            from educational_institutions
-            where id = (
-                select educational_institution_id
-                from teachers
-                where user_id = :userId
-            )
-            limit 1
-        ";
-        $params = ['userId' => $userId];
-        $rawData = $this->getRawData($sql, $params);
-        return $this->getPreparedData($rawData);
+        $ei = $this->getTeacher($userId);
+
+        if (empty($ei)) return false;
+
+        /*
+         'teacher' =>
+              'id' => int 1
+              'first_name' => string 'Татьяна' (length=14)
+              'last_name' => string 'Самойлова' (length=18)
+              'user_id' => int 1
+              'job_title' => int 1
+              'subject_id' => int 1
+              'educational_institution_id' => int 1
+         */
+        $requireFields = [
+            'first_name',
+            'last_name',
+            'job_title',
+        ];
+
+        foreach ($requireFields as $field) {
+            if (empty($ei[$field])) return false;
+        }
+
+        return true;
     }
+
+
 
     public function getGroupList(int $userId): array
     {

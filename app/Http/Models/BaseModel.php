@@ -2,12 +2,21 @@
 
 namespace App\Http\Models;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
-use \Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class BaseModel extends Model
 {
+    public static function init()
+    {
+        if (Auth::user()) {
+            return Auth::user()->id;
+        }
+
+        return null;
+    }
+
     /**
      * Получение необработанного результата выборки данных
      *
@@ -56,5 +65,10 @@ class BaseModel extends Model
         }
 
         return $result;
+    }
+
+    protected function updateItem($sql): void
+    {
+
     }
 }

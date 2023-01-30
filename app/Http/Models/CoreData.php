@@ -6,7 +6,6 @@ use App\Http\Entities\Core;
 use App\Http\Interfaces\CoreInterface;
 use App\Http\Interfaces\EducationalInstitutionInterface as EducationalInstitution;
 use App\Http\Interfaces\TeacherInterface as Teacher;
-//use Illuminate\Support\Facades\Auth;
 
 class CoreData implements CoreInterface
 {
@@ -21,8 +20,8 @@ class CoreData implements CoreInterface
     public function __construct($user, Teacher $teacher, EducationalInstitution $educationalInstitution)
     {
         $this->prepareUserData($user);
-        $this->educationalInstitution = $educationalInstitution;
         $this->teacher = $teacher;
+        $this->educationalInstitution = $educationalInstitution;
         $this->core = new Core();
     }
 

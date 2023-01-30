@@ -13,14 +13,6 @@ interface TeacherInterface
     public function getTeacher(int $userId): array;
 
     /**
-     * Данные об учебном заведении
-     *
-     * @param int $userId
-     * @return array
-     */
-    public function getEducationalInstitution(int $userId): array;
-
-    /**
      * Список групп за одним учителем
      *
      * @param int $userId
