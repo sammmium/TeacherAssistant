@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ModifyColumnsTableTeacher extends Migration
+class CreateTableCardValues extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class ModifyColumnsTableTeacher extends Migration
      */
     public function up()
     {
-        Schema::table('teachers', function (Blueprint $table) {
-            $table->renameColumn('role_id', 'job_title');
-            $table->string('job_title', 255)->change();
+        Schema::create('card_values', function (Blueprint $table) {
+            $table->integerIncrements('id');
+            $table->integer('card_id')->index();
+            $table->integer('code_id')->index();
+            $table->string('value');
         });
     }
 
@@ -26,6 +28,6 @@ class ModifyColumnsTableTeacher extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('card_values');
     }
 }

@@ -18,7 +18,6 @@ class CreateTableEducationalInstitutions extends Migration
             $table->string('full_name');
             $table->string('short_name');
             $table->string('address');
-            $table->integer('city_id');
         });
     }
     /*

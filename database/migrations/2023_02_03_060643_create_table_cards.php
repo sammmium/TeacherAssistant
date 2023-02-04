@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class DropColumnTableTeacher extends Migration
+class CreateTableCards extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,11 @@ class DropColumnTableTeacher extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('cards', function (Blueprint $table) {
+            $table->integerIncrements('id');
+            $table->integer('test_id')->index();
+            $table->integer('pupil_id')->index();
+        });
     }
 
     /**
@@ -23,8 +27,6 @@ class DropColumnTableTeacher extends Migration
      */
     public function down()
     {
-        Schema::table('teachers', function (Blueprint $table) {
-            $table->dropColumn('educational_institutions_id');
-        });
+        Schema::dropIfExists('cards');
     }
 }

@@ -12,6 +12,8 @@
     <!-- Scripts -->
     <script src="{{ asset('bootstrap/js/bootstrap.js') }}" defer></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="{{ asset('fontawesome/js/fontawesome.js') }}" defer></script>
+    <script src="{{ asset('fontawesome/js/solid.js') }}" defer></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/main.js') }}" defer></script>
 
@@ -20,6 +22,8 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
+    <link href="{{ asset('fontawesome/css/fontawesome.css') }}" rel="stylesheet">
+    <link href="{{ asset('fontawesome/css/solid.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('bootstrap/css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
@@ -51,6 +55,9 @@
                             </li>
                             <li class="nav-item">
                                 <a class="button-settings" href="{{ url('/settings') }}">{{ __('app.buttons.settings') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="button-test" href="{{ url('/test') }}">{{ __('app.buttons.test') }}</a>
                             </li>
                         </ul>
                     @endauth

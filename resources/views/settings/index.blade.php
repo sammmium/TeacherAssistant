@@ -12,16 +12,33 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('app.pages.settings.title') }}</div>
+                    <div class="card-header">{{ __('app.pages.settings.require.title') }}</div>
 
                     <div class="card-body">
                         <div class="info">
-                            {{ __('app.pages.settings.info') }}
+                            {{ __('app.pages.settings.require.info') }}
                         </div>
 
                         <div class="links-container">
                             <a href="{{ url('/teacher') }}">{{ __('app.pages.settings.teacher') }}</a>
                             <a href="{{ url('/educational_institution') }}">{{ __('app.pages.settings.educational_institution') }}</a>
+                        </div>
+                    </div>
+                </div>
+
+                &nbsp;
+
+                <div class="card">
+                    <div class="card-header">{{ __('app.pages.settings.option.title') }}</div>
+
+                    <div class="card-body">
+                        <div class="info">
+                            {{ __('app.pages.settings.option.info') }}
+                        </div>
+
+                        <div class="links-container">
+                            <a href="{{ url('/group') }}">{{ __('app.pages.settings.group') }}</a>
+{{--                            <a href="{{ url('/educational_institution') }}">{{ __('app.pages.settings.educational_institution') }}</a>--}}
                         </div>
                     </div>
                 </div>

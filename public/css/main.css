@@ -35,14 +35,16 @@
     background-color: #d6e9f8;
     padding: 5px 10px;
     width: 200px;
+    line-height: 30px;
     display: flex;
     margin-right: 5px;
+    margin-bottom: 5px;
 }
 .nav-item:last-child {
     margin-right: 0;
 }
 
-.nav-item a {
+.nav-item > a {
     flex: 1;
     text-decoration: none;
     color: #343a40;
@@ -79,8 +81,24 @@
     background-color: #98e1b7;
 }
 
-.view-data {
+.group-item-button {
+    border: 1px solid #000000;
+    width: 50px;
+    padding: 5px;
+    margin-right: 10px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #d6e9f8;
+    cursor: pointer;
+}
 
+.group-item-button a {
+    text-decoration: none;
+    color: #343a40;
+}
+
+.group-item-button:hover {
+    background-color: #98e1b7;
 }
 
 
@@ -88,7 +106,100 @@
 
 
 
+.card-header {
+    display: flex;
+    justify-content: space-between;
+}
 
+.button-up {
+    border: 1px solid #000000;
+    border-radius: 5px;
+    background-color: #d6e9f8;
+    width: 32px;
+    line-height: 26px;
+    padding: 2px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.button-up:hover {
+    background-color: #98e1b7;
+}
+
+.card-row-button .button-down {
+    border: 1px solid #000000;
+    border-radius: 5px;
+    background-color: #d6e9f8;
+    width: 32px;
+    line-height: 26px;
+    padding: 2px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.card-row-button .button-down:hover {
+    background-color: #98e1b7;
+}
+
+.card-row-button a {
+    color: #000000;
+    text-decoration: none;
+}
+
+.button-up-group {
+    text-align: right;
+}
+
+.card-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 5px 0;
+    line-height: 32px;
+}
+
+.card-row .card-row-title {
+    text-align: right;
+    color: gray;
+}
+
+.card-row .card-row-value {
+    text-align: left;
+}
+
+.card-row .card-row-value .card-row-item {
+    display: flex;
+    justify-content: left;
+    line-height: 16px;
+}
+
+.card-row .card-row-button {
+    width: 100%;
+}
+
+label {
+    margin: 0 0 0 10px;
+}
+
+.error-without {
+    color: limegreen;
+}
+
+.button-download {
+    border: 1px solid #000000;
+    border-radius: 5px;
+    background-color: #0a53be;
+    width: 32px;
+    line-height: 26px;
+    padding: 2px;
+    text-align: center;
+    cursor: pointer;
+    color: white;
+}
+
+.button-download:hover {
+    background-color: #0d6efd;
+}
 
 
 

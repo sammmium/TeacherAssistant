@@ -15,7 +15,14 @@ return [
         'add' => 'Add',
         'delete' => 'Delete',
         'back' => 'Back',
+        'edit' => 'Edit',
+        'test' => 'Test',
     ],
+
+    'confirm' => [
+        'are_you_sure' => 'Are you sure?'
+    ],
+
     'pages' => [
 
         /*
@@ -45,7 +52,19 @@ return [
         /*
          * Home page
          */
-        'home' => [],
+        'home' => [
+            'cards' => [
+                'groups' => [
+                    'title' => 'Class List',
+                    'add_button' => 'Add Class'
+                ],
+
+                'tests' => [
+                    'title' => 'Test List',
+                    'add_button' => 'Add Test'
+                ]
+            ],
+        ],
 
         /*
          * Tests page
@@ -56,12 +75,18 @@ return [
          * Settings page
          */
         'settings' => [
-            'title' => 'Settings',
-            'info' => 'These instances must be filled. First of all must be filled Teacher.',
+            'require' => [
+                'title' => 'Settings Require',
+                'info' => 'These instances must be filled. First of all must be filled Teacher.'
+            ],
+            'option' => [
+                'title' => 'Settings Optional',
+                'info' => 'These instances must be filled in the second order.'
+            ],
             'teacher' => 'Teacher',
-            'educational_institution' => 'Educational Institution'
+            'educational_institution' => 'Educational Institution',
+            'group' => 'Class List',
         ],
-
 
         'educational_institution' => [
             'title' => [
@@ -88,6 +113,25 @@ return [
             'submit' => 'Save',
             'edit' => 'Edit',
         ],
+
+        'group' => [
+            'title' => [
+                'index' => 'Settings: Class List',
+                'edit' => 'Settings: Class (Edit)',
+                'create' => 'Settings: Class (Create)',
+            ],
+            'name' => 'Name',
+            'submit' => 'Save',
+            'add_pupil_button' => 'Add Pupil',
+            'edit' => 'Edit',
+        ],
+
+        'test' => [
+            'title' => [
+                'index' => 'Test: Test Situation'
+            ],
+            'name' => 'Test',
+        ]
     ],
 
 ];

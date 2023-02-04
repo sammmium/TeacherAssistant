@@ -3,6 +3,7 @@
 namespace App\Http\Models;
 
 use App\Http\Interfaces\TeacherInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Teacher extends TEI implements TeacherInterface
@@ -16,7 +17,6 @@ class Teacher extends TEI implements TeacherInterface
         'last_name',
         'user_id',
         'job_title',
-        'subject_id',
         'educational_institution_id'
     ];
 
@@ -34,9 +34,9 @@ class Teacher extends TEI implements TeacherInterface
 
     public function check(int $userId = null): bool
     {
-        $ei = $this->getTeacher($userId);
+        $teacher = $this->getTeacher($userId);
 
-        if (empty($ei)) return false;
+        if (empty($teacher)) return false;
 
         /*
          'teacher' =>
@@ -55,7 +55,7 @@ class Teacher extends TEI implements TeacherInterface
         ];
 
         foreach ($requireFields as $field) {
-            if (empty($ei[$field])) return false;
+            if (empty($teacher[$field])) return false;
         }
 
         return true;
@@ -74,5 +74,10 @@ class Teacher extends TEI implements TeacherInterface
     {
         // TODO: Implement getGroupMembersList() method.
         return [];
+    }
+
+    public function getTeacherId()
+    {
+        return $this->getTeacher(Auth::user()->id)['id'];
     }
 }
