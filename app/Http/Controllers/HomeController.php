@@ -658,7 +658,7 @@ class HomeController extends MainController
             'cm_2' => 0, 'pm_2' => $this->getPercent($count_members, 0),
             'cm_1' => 0, 'pm_1' => $this->getPercent($count_members, 0)
         ];
-        $average_range = $this->getAverage($ranges);
+        $average_range = $this->getAverage($ranges, $count_members);
 
         $level = [
             'count_level_high' => 15, 'percentage_level_high' => $this->getPercent($count_members, 15),
@@ -771,25 +771,41 @@ class HomeController extends MainController
         return 0;
     }
 
-    private function getAverage(array $ranges)
+    private function getAverage(array $ranges, int $count_members)
     {
-        $count = 0;
         $total = 0;
         foreach ($ranges as $key => $value) {
             if (strpos($key, 'cm_') !== false) {
-                if ($value > 0) {
-                    $count++;
+                switch ($key) {
+                    case 'cm_10': $total = $this->getAVG($total, 10, $value); break;
+                    case 'cm_9': $total = $this->getAVG($total, 9, $value); break;
+                    case 'cm_8': $total = $this->getAVG($total, 8, $value); break;
+                    case 'cm_7': $total = $this->getAVG($total, 7, $value); break;
+                    case 'cm_6': $total = $this->getAVG($total, 6, $value); break;
+                    case 'cm_5': $total = $this->getAVG($total, 5, $value); break;
+                    case 'cm_4': $total = $this->getAVG($total, 4, $value); break;
+                    case 'cm_3': $total = $this->getAVG($total, 3, $value); break;
+                    case 'cm_2': $total = $this->getAVG($total, 2, $value); break;
+                    case 'cm_1': $total = $this->getAVG($total, 1, $value); break;
                 }
-                $total += $value;
             }
         }
 
         if ($total > 0) {
-            if ($count > 0) {
-                return ceil($total / $count);
+            if ($count_members > 0) {
+                return ceil($total / $count_members);
             }
         }
 
         return 0;
+    }
+
+    private function getAVG(int $total, int $range, int $value = 0)
+    {
+        if ($value > 0) {
+            return $total + ($range * $value);
+        }
+
+        return $total;
     }
 }
