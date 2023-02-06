@@ -50,15 +50,15 @@
                             <li class="nav-item">
                                 <a class="button-home" href="{{ url('/home') }}">{{ __('app.buttons.home') }}</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="button-tests" href="{{ url('/tests') }}">{{ __('app.buttons.tests') }}</a>
-                            </li>
+{{--                            <li class="nav-item">--}}
+{{--                                <a class="button-tests" href="{{ url('/tests') }}">{{ __('app.buttons.tests') }}</a>--}}
+{{--                            </li>--}}
                             <li class="nav-item">
                                 <a class="button-settings" href="{{ url('/settings') }}">{{ __('app.buttons.settings') }}</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="button-test" href="{{ url('/test') }}">{{ __('app.buttons.test') }}</a>
-                            </li>
+{{--                            <li class="nav-item">--}}
+{{--                                <a class="button-test" href="{{ url('/test') }}">{{ __('app.buttons.test') }}</a>--}}
+{{--                            </li>--}}
                         </ul>
                     @endauth
 

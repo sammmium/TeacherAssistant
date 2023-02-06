@@ -64,6 +64,16 @@ return [
                     'add_button' => 'Add Test'
                 ]
             ],
+
+            'group' => [
+                'add' => [
+                    'main' => [
+                        'title' => 'Главная страница',
+                        'educational_institution' => 'Наименование учреждения'
+                    ],
+                    'title' => 'Добавить группу'
+                ]
+            ]
         ],
 
         /*

@@ -91,6 +91,7 @@ Route::post('/test/card/store', 'TestController@store')->name('test-card-store')
 Route::get('/home/group/list', 'HomeController@group_list')->name('home-group-list');
 Route::get('/home/group/{id}', 'HomeController@group_index')->name('home-group-index');
 Route::post('/home/group/list/return', 'HomeController@group_list_return')->name('group-list-return');
+Route::get('/home/group/list/add', 'HomeController@group_list_add')->name('home-group-list-add');
 
 Route::get('/home/subject/{id}', 'HomeController@subject_index')->name('home-subject-index');
 Route::post('/home/subject/list', 'HomeController@subject_list')->name('home-subject-list');

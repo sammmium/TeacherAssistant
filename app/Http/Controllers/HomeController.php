@@ -808,4 +808,12 @@ class HomeController extends MainController
 
         return $total;
     }
+
+    public function group_list_add()
+    {
+        parent::access();
+        $input = $this->test_data();
+//        var_dump(count($input));exit;
+        return view('home.group.add', $input);
+    }
 }
