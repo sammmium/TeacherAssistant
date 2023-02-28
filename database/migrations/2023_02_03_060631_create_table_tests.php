@@ -17,8 +17,8 @@ class CreateTableTests extends Migration
             $table->integerIncrements('id');
             $table->string('name', 255);
             $table->date('date');
-            $table->integer('subject_id')->index();
-            $table->integer('group_id')->index();
+            $table->integer('unit_subject_id')->index()->nullable();
+            $table->integer('unit_group_id')->index()->nullable();
         });
     }
 

@@ -12,6 +12,8 @@
     <!-- Scripts -->
     <script src="{{ asset('bootstrap/js/bootstrap.js') }}" defer></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://unpkg.com/imask"></script>
+    <script src="{{ asset('js/jquery.maskedinput.min.js') }}" defer></script>
     <script src="{{ asset('fontawesome/js/fontawesome.js') }}" defer></script>
     <script src="{{ asset('fontawesome/js/solid.js') }}" defer></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -29,6 +31,43 @@
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
 
     <script type="application/javascript">
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const mask = (dataValue, options) => { // создаем универсальную функцию
+                const elements = document.querySelectorAll(`[data-mask="${dataValue}"]`) // ищем поля ввода по селектору с переданным значением data-атрибута
+                if (!elements) return // если таких полей ввода нет, прерываем функцию
+
+                elements.forEach(el => { // для каждого из полей ввода
+                    IMask(el, options) // инициализируем плагин imask для необходимых полей ввода с переданными параметрами маски
+                })
+            }
+
+            // Используем наше функцию mask для разных типов масок
+
+            // Маска для номера телефона
+            mask('phone', {
+                mask: '+{375}(00)000-00-00'
+            })
+
+            // Маска для почтового индекса
+            mask('postalCode', {
+                mask: '000000' // шесть цифр
+            })
+
+            // Маска для даты
+            mask('date', {
+                mask: Date,
+                min: new Date(1900, 0, 1), // минимальная дата 01.01.1900
+            })
+
+            // Маска для числа
+            mask('number', {
+                mask: Number,
+                thousandsSeparator: ' ' // разделитель тысяч в числе
+            })
+
+        });
         @yield('scripts')
     </script>
 </head>
@@ -55,6 +94,9 @@
 {{--                            </li>--}}
                             <li class="nav-item">
                                 <a class="button-settings" href="{{ url('/settings') }}">{{ __('app.buttons.settings') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="button-dicts" href="{{ url('/dicts') }}">Справочник</a>
                             </li>
 {{--                            <li class="nav-item">--}}
 {{--                                <a class="button-test" href="{{ url('/test') }}">{{ __('app.buttons.test') }}</a>--}}

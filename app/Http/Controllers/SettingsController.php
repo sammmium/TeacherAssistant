@@ -17,5 +17,34 @@ class SettingsController extends MainController
         return view('settings.index');
     }
 
+    public function dicts_index()
+    {
+        if (Auth::guest()) {
+            return view('welcome');
+        }
+
+        return view('settings.dicts.index');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

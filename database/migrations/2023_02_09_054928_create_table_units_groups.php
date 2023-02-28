@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableGroups extends Migration
+class CreateTableUnitsGroups extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateTableGroups extends Migration
      */
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
+        Schema::create('units_groups', function (Blueprint $table) {
             $table->integerIncrements('id');
-            $table->string('name');
-            $table->integer('teacher_id');
+            $table->integer('unit_id')->index();
+            $table->integer('group_id')->index()->nullable();
         });
     }
 
@@ -27,6 +27,6 @@ class CreateTableGroups extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('units_groups');
     }
 }

@@ -1,12 +1,9 @@
 @extends('layouts.app')
 
 @section('scripts')
-{{--    <script>--}}
     $(document).ready(function() {
         /* подсветка кнопки меню */
         $('a.button-home').parent().addClass('selected-button');
-
-
     });
 @endsection
 
@@ -19,22 +16,35 @@
 
                     <div class="card-body">
                         <div class="card-row col-md-12">
-                            <div class="col-md-4 card-row-title">
-                                Наименование учреждения
+                            <div class="col-md-3 card-row-title">
+                                Учебный год
                             </div>
                             <div class="col-md-7 card-row-value">
-                                {{ $educational_institution['full_name'] }}
+                                {{ $year }}
                             </div>
+                            <div class="col-md-1 card-row-button"></div>
                             <div class="col-md-1 card-row-button"></div>
                         </div>
 
                         <div class="card-row col-md-12">
-                            <div class="col-md-4 card-row-title">
-                                {{ $teacher['job_title'] }}
+                            <div class="col-md-3 card-row-title">
+                                Наименование учреждения
                             </div>
                             <div class="col-md-7 card-row-value">
-                                {{ $teacher['first_name'] }} {{ $teacher['last_name'] }}
+                                {{ $educational_institution['fullname'] }}
                             </div>
+                            <div class="col-md-1 card-row-button"></div>
+                            <div class="col-md-1 card-row-button"></div>
+                        </div>
+
+                        <div class="card-row col-md-12">
+                            <div class="col-md-3 card-row-title">
+                                {{ $role }}
+                            </div>
+                            <div class="col-md-7 card-row-value">
+                                {{ $teacher['lastname'] }} {{ $teacher['firstname'] }} {{ $teacher['patronymic'] }}
+                            </div>
+                            <div class="col-md-1 card-row-button"></div>
                             <div class="col-md-1 card-row-button"></div>
                         </div>
                     </div>
@@ -48,27 +58,30 @@
                     <div class="card-body">
                         @foreach($group_list as $group)
                             <div class="card-row col-md-12">
-                                <div class="col-md-4 card-row-title"></div>
+                                <div class="col-md-3 card-row-title"></div>
                                 <div class="col-md-7 card-row-value">
-                                    <a href="{{ route('home-group-index', $group['id']) }}" title="Выбрать группу">
+                                    <a href="{{ route('home-group-select', $group['id']) }}" title="Выбрать группу">
                                         <div class="btn btn-secondary col-md-5">{{ $group['name'] }}</div>
                                     </a>
                                 </div>
+
                                 <div class="col-md-1 card-row-button"></div>
+                                <div class="col-md-1 card-row-button text-md-right">
+                                    <a href="{{ route('home-group-reset', $group['id']) }}" class="btn btn-danger" title="Открепить группу">
+                                        <i class="fa fa-solid fa-cancel"></i>
+                                    </a>
+                                </div>
                             </div>
                         @endforeach
 
                         <div class="card-row col-md-12">
-                            <div class="col-md-4 card-row-title"></div>
+                            <div class="col-md-3 card-row-title"></div>
                             <div class="col-md-7 card-row-value">
-{{--                                <form method="POST" action="{{ route('home-group-list-add') }}">--}}
-{{--                                    @csrf--}}
-{{--                                    <button class="btn btn-primary col-md-5">Добавить группу</button>--}}
-{{--                                </form>--}}
-                                <a href="{{ route('home-group-list-add') }}">
+                                <a href="{{ route('home-group-add') }}">
                                     <div class="btn btn-primary col-md-5">Добавить группу</div>
                                 </a>
                             </div>
+                            <div class="col-md-1 card-row-button"></div>
                             <div class="col-md-1 card-row-button"></div>
                         </div>
                     </div>

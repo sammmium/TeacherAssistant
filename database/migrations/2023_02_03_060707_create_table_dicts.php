@@ -15,10 +15,10 @@ class CreateTableDicts extends Migration
     {
         Schema::create('dicts', function (Blueprint $table) {
             $table->integerIncrements('id');
-            $table->string('code')->index();
-            $table->string('value')->index();
-            $table->string('description')->nullable();
-            $table->integer('parent_id')->nullable();
+            $table->integer('parent_id')->index()->nullable();
+            $table->string('code', 255)->index()->nullable();
+            $table->string('value', 255)->index();
+            $table->string('description', 255)->nullable();
         });
     }
 

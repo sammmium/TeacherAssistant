@@ -163,6 +163,11 @@
     color: gray;
 }
 
+.card-row .card-row-head {
+    color: #000000;
+    font-weight: 700;
+}
+
 .card-row .card-row-value {
     text-align: left;
 }
@@ -175,6 +180,9 @@
 
 .card-row .card-row-button {
     width: 100%;
+    flex: 1;
+    /*display: flex;*/
+    flex-direction: row;
 }
 
 label {

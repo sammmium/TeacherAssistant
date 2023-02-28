@@ -8,60 +8,64 @@ use Illuminate\Support\Facades\DB;
 
 class Teacher extends TEI implements TeacherInterface
 {
-    protected $table = 'teachers';
+    protected $table = 'people';
 
     public $timestamps = false;
 
     protected $fillable = [
-        'first_name',
-        'last_name',
+        'lastname',
+        'firstname',
+        'patronymic',
+        'birthdate',
+        'description',
+        'role_id',
         'user_id',
-        'job_title',
-        'educational_institution_id'
     ];
 
-    public function getTeacher(int $userId): array
+    public static function init()
     {
-        $sql = "
-            select *
-            from teachers
-            where user_id = :userId
-            limit 1";
-        $params = ['userId' => $userId];
-        $rawData = $this->getRawData($sql, $params);
-        return $this->getPreparedData($rawData);
+        $userId = parent::init();
+
+        $teacher = DB::table('people')
+            ->select('*')
+            ->where(['user_id' => $userId])
+            ->get();
+
+        Unit::initUnit($teacher['id']);
+
+        return $teacher;
     }
 
-    public function check(int $userId = null): bool
+    public static function getTeacher(): array
     {
-        $teacher = $this->getTeacher($userId);
+        $userId = parent::init();
+
+        return self::prepare(DB::table('people')
+            ->select('*')
+            ->where(['user_id' => $userId])
+            ->get());
+    }
+
+    public static function check(): bool
+    {
+        $teacher = self::getTeacher();
 
         if (empty($teacher)) return false;
 
-        /*
-         'teacher' =>
-              'id' => int 1
-              'first_name' => string 'Татьяна' (length=14)
-              'last_name' => string 'Самойлова' (length=18)
-              'user_id' => int 1
-              'job_title' => int 1
-              'subject_id' => int 1
-              'educational_institution_id' => int 1
-         */
         $requireFields = [
-            'first_name',
-            'last_name',
-            'job_title',
+            'firstname',
+            'lastname',
+            'role_id',
         ];
 
         foreach ($requireFields as $field) {
             if (empty($teacher[$field])) return false;
         }
 
+        Unit::initUnit($teacher['id']);
+
         return true;
     }
-
-
 
     public function getGroupList(int $userId): array
     {

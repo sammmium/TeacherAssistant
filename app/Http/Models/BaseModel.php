@@ -71,4 +71,44 @@ class BaseModel extends Model
     {
 
     }
+
+    protected static function prepare($rawData, bool $list = false): array
+    {
+        $result = [];
+
+        if (!empty($rawData)) {
+            foreach ($rawData as $item) {
+                $result[] = self::prepareItem($item);
+            }
+        }
+
+        if ($list) return $result;
+
+        if (count($result) == 0) return $result;
+
+        return $result[0];
+    }
+
+    protected static function prepareItem($item): array
+    {
+        $result = [];
+        foreach ($item as $key => $value) {
+            $result[$key] = $value;
+        }
+
+        return  $result;
+    }
+
+    protected static function getFIO(array $person): string
+    {
+        $separator = ' ';
+        $result = !empty($person['lastname']) ? $person['lastname'] . $separator : '';
+        $result .= !empty($person['firstname']) ? $person['firstname'] . $separator : '';
+        $result .= !empty($person['patronymic']) ? $person['patronymic'] : '';
+        return $result;
+    }
+
+
+
+
 }

@@ -16,7 +16,7 @@ class CreateTableCards extends Migration
         Schema::create('cards', function (Blueprint $table) {
             $table->integerIncrements('id');
             $table->integer('test_id')->index();
-            $table->integer('pupil_id')->index();
+            $table->integer('unit_group_pupil_id')->index();
         });
     }
 

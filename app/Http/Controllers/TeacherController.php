@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Models\Dicts;
 use App\Http\Models\Teacher;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -12,18 +13,35 @@ class TeacherController extends MainController
 {
     public function index()
     {
-        if (Auth::guest()) {
-            return view('welcome');
-        }
+        parent::access();
 
-        $instance = new Teacher();
-        $teacher = $instance->getTeacher(Auth::user()->id);
+        $teacher = Teacher::getTeacher();
+
         if (count($teacher)) {
             $input['teacher'] = $teacher;
+            $input['teacher']['birthdate'] = $this->transformDate($input['teacher']['birthdate'], 'ru');
+            $input['role'] = Dicts::getById($teacher['role_id']);
+
             return view('teacher.index', $input);
         }
-        return view('teacher.create');
+
+        $dicts = Dicts::getOptions('roles');
+        $input['dicts'] = $this->excludePupil($dicts);
+
+        return view('teacher.create', $input);
     }
+
+    private function excludePupil(array $input): array
+    {
+        $result = [];
+        foreach ($input as $item) {
+            if ($item['code'] !== 'pupil') {
+                $result[] = $item;
+            }
+        }
+        return $result;
+    }
+
     public function create()
     {
         if (Auth::guest()) {
@@ -40,10 +58,12 @@ class TeacherController extends MainController
         }
 
         $input = [
-            'first_name' => $request['first_name'],
-            'last_name' => $request['last_name'],
+            'lastname' => $request['lastname'],
+            'firstname' => $request['firstname'],
+            'patronymic' => $request['patronymic'],
+            'birthdate' => $this->transformDate($request['birthdate'], 'en'),
             'user_id' => Auth::user()->id,
-            'job_title' => $request['job_title']
+            'role_id' => (int)$request['role_id']
         ];
 
         Teacher::create($input);
@@ -59,7 +79,14 @@ class TeacherController extends MainController
 
         $instance = new Teacher();
         $teacher = $instance->getTeacher(Auth::user()->id);
-        return view('teacher.edit', $teacher);
+
+        $input['teacher'] = $teacher;
+        $input['teacher']['birthdate'] = $this->transformDate($input['teacher']['birthdate'], 'ru');
+
+        $dicts = Dicts::getOptions('roles');
+        $input['roles'] = $dicts;
+
+        return view('teacher.edit', $input);
     }
 
     public function store(Request $request)
@@ -70,9 +97,11 @@ class TeacherController extends MainController
 
         Teacher::where('id', $request['teacher_id'])
             ->update([
-                'first_name' => $request['first_name'],
-                'last_name' => $request['last_name'],
-                'job_title' => $request['job_title']
+                'lastname' => $request['lastname'],
+                'firstname' => $request['firstname'],
+                'patronymic' => $request['patronymic'],
+                'birthdate' => $this->transformDate($request['birthdate'], 'en'),
+                'role_id' => (int)$request['role_id']
             ]);
 
         return redirect('teacher');

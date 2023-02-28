@@ -16,48 +16,50 @@
 
                     <div class="card-body">
 
-                        <form method="POST" name="teacher" action="{{ route('teacher-add') }}">
+                        <form method="POST" name="people" action="{{ route('teacher-add') }}">
                             @csrf
 
                             <div class="form-group row">
-                                <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('app.pages.teacher.first_name') }}</label>
+                                <label for="lastname" class="col-md-4 col-form-label text-md-right">Фамилия</label>
 
                                 <div class="col-md-6">
-                                    <input id="first_name" type="text" class="form-control @error('teacher_first_name') is-invalid @enderror" name="first_name" value="{{ old('first_name') }}" required autocomplete="first_name" autofocus>
-
-                                    @error('teacher_first_name')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                    <input id="lastname" type="text" class="form-control" name="lastname" value="{{ old('lastname') }}" required autocomplete="lastname" autofocus>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="last_name" class="col-md-4 col-form-label text-md-right">{{ __('app.pages.teacher.last_name') }}</label>
+                                <label for="firstname" class="col-md-4 col-form-label text-md-right">Имя</label>
 
                                 <div class="col-md-6">
-                                    <input id="last_name" type="text" class="form-control @error('teacher_last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="last_name" autofocus>
-
-                                    @error('teacher_last_name')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                    <input id="firstname" type="text" class="form-control" name="firstname" value="{{ old('firstname') }}" required autocomplete="firstname" autofocus>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="job_title" class="col-md-4 col-form-label text-md-right">{{ __('app.pages.teacher.job_title') }}</label>
+                                <label for="patronymic" class="col-md-4 col-form-label text-md-right">Отчество</label>
 
                                 <div class="col-md-6">
-                                    <input id="job_title" type="text" class="form-control @error('teacher_job_title') is-invalid @enderror" name="job_title" value="{{ old('job_title') }}" required autocomplete="job_title" autofocus>
+                                    <input id="patronymic" type="text" class="form-control" name="patronymic" value="{{ old('patronymic') }}" required autocomplete="patronymic" autofocus>
+                                </div>
+                            </div>
 
-                                    @error('teacher_job_title')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                            <div class="form-group row">
+                                <label for="birthdate" class="col-md-4 col-form-label text-md-right">Дата рождения</label>
+
+                                <div class="col-md-6">
+                                    <input id="birthdate" type="text" class="form-control" name="birthdate" value="{{ old('birthdate') }}" required autocomplete="birthdate" autofocus>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="role_id" class="col-md-4 col-form-label text-md-right">Роль (должность)</label>
+
+                                <div class="col-md-6">
+                                    <select id="role_id" name="role_id" class="form-control">
+                                        @foreach($dicts as $dict)
+                                            <option value="{{ $dict['id'] }}">{{ $dict['value'] }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
 

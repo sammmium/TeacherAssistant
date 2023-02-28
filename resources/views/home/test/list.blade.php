@@ -16,31 +16,44 @@
 
                     <div class="card-body">
                         <div class="card-row col-md-12">
-                            <div class="col-md-4 card-row-title">
+                            <div class="col-md-3 card-row-title">
+                                Учебный год
+                            </div>
+                            <div class="col-md-7 card-row-value">
+                                {{ $year }}
+                            </div>
+                            <div class="col-md-1 card-row-button"></div>
+                            <div class="col-md-1 card-row-button"></div>
+                        </div>
+
+                        <div class="card-row col-md-12">
+                            <div class="col-md-3 card-row-title">
                                 Наименование учреждения
                             </div>
                             <div class="col-md-7 card-row-value">
-                                {{ $educational_institution['full_name'] }}
+                                {{ $educational_institution['fullname'] }}
                             </div>
+                            <div class="col-md-1 card-row-button"></div>
                             <div class="col-md-1 card-row-button"></div>
                         </div>
 
                         <div class="card-row col-md-12">
-                            <div class="col-md-4 card-row-title">
-                                {{ $teacher['job_title'] }}
+                            <div class="col-md-3 card-row-title">
+                                {{ $role['value'] }}
                             </div>
                             <div class="col-md-7 card-row-value">
-                                {{ $teacher['first_name'] }} {{ $teacher['last_name'] }}
+                                {{ $teacher['lastname'] }} {{ $teacher['firstname'] }} {{ $teacher['patronymic'] }}
                             </div>
+                            <div class="col-md-1 card-row-button"></div>
                             <div class="col-md-1 card-row-button"></div>
                         </div>
 
                         <div class="card-row col-md-12">
-                            <div class="col-md-4 card-row-title">
+                            <div class="col-md-3 card-row-title">
                                 Класс
                             </div>
                             <div class="col-md-7 card-row-value">
-                                {{ $group['name'] }}
+                                {{ $group['value'] }}
                             </div>
                             <div class="col-md-1 card-row-button">
                                 <form method="POST" action="{{ route('group-list-return') }}">
@@ -50,14 +63,15 @@
                                     </button>
                                 </form>
                             </div>
+                            <div class="col-md-1 card-row-button"></div>
                         </div>
 
                         <div class="card-row col-md-12">
-                            <div class="col-md-4 card-row-title">
+                            <div class="col-md-3 card-row-title">
                                 Предмет
                             </div>
                             <div class="col-md-7 card-row-value">
-                                {{ $subject['name'] }}
+                                {{ $subject['value'] }}
                             </div>
                             <div class="col-md-1 card-row-button">
                                 <form method="POST" action="{{ route('home-subject-list') }}">
@@ -67,6 +81,7 @@
                                     </button>
                                 </form>
                             </div>
+                            <div class="col-md-1 card-row-button"></div>
                         </div>
                     </div>
                 </div>
@@ -79,22 +94,33 @@
                     <div class="card-body">
                         @foreach($test_list as $test)
                             <div class="card-row col-md-12">
-                                <div class="col-md-4 card-row-title"></div>
+                                <div class="col-md-3 card-row-title"></div>
                                 <div class="col-md-7 card-row-value">
-                                    <a href="{{ route('home-test-index', $test['id']) }}" title="Выбрать контрольную работу">
+                                    <a href="{{ route('home-test-select', $test['id']) }}" title="Выбрать контрольную работу">
                                         <div class="btn btn-secondary col-md-5">{{ $test['name'] }}</div>
                                     </a>
                                 </div>
                                 <div class="col-md-1 card-row-button"></div>
+                                <div class="col-md-1 card-row-button">
+                                    <form method="POST" name="group" action="{{ route('home-test-reset') }}">
+                                        @csrf
+                                        <input type="hidden" name="test_id" value="{{ $test['id'] }}">
+                                        <button class="btn btn-danger" title="Открепить контрольную работу">
+                                            <i class="fa fa-solid fa-cancel"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         @endforeach
+
                         <div class="card-row col-md-12">
-                            <div class="col-md-4 card-row-title"></div>
+                            <div class="col-md-3 card-row-title"></div>
                             <div class="col-md-7 card-row-value">
-                                <a href="#">
+                                <a href="{{ route('home-test-add') }}">
                                     <div class="btn btn-primary col-md-5">Добавить контрольную работу</div>
                                 </a>
                             </div>
+                            <div class="col-md-1 card-row-button"></div>
                             <div class="col-md-1 card-row-button"></div>
                         </div>
                     </div>

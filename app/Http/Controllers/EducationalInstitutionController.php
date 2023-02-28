@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\EducationalInstitution;
 use App\Http\Models\Teacher;
+use App\Http\Models\Unit;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class EducationalInstitutionController extends Controller
+class EducationalInstitutionController extends MainController
 {
     /**
      * Create a new controller instance.
@@ -22,46 +23,79 @@ class EducationalInstitutionController extends Controller
 
     public function index()
     {
-        if (Auth::guest()) {
-            return view('welcome');
+        parent::access();
+
+        if (!Teacher::check()) {
+            return redirect()->route('teacher');
         }
 
-        $teacher = new Teacher();
-        if (!$teacher->check(Auth::user()->id)) {
-            return redirect('teacher');
+        $educationalInstitutionList = EducationalInstitution::getEducationalInstitutionList();
+
+        if (count($educationalInstitutionList)) {
+            $teacher = Teacher::getTeacher();
+            if (Unit::isFilledUnit($teacher['id'])) {
+                $unit = Unit::getUnit($teacher['id'], date('Y'));
+                $educationalInstitutionId = $unit['educational_institution_id'];
+                $params = [
+                    'id' => $educationalInstitutionId,
+                ];
+                $input['educational_institution'] = EducationalInstitution::getEducationalInstitution($params);
+                return view('educational_institution.selected', $input);
+            }
+            $input['educational_institutions'] = $educationalInstitutionList;
+            $input['teacher'] = $teacher;
+            return view('educational_institution.select', $input);
         }
 
-        $instance = new EducationalInstitution();
-        $educationalInstitution = $instance->getEducationalInstitutionByUserId(Auth::user()->id);
-        if (count($educationalInstitution)) {
-            $input['educational_institution'] = $educationalInstitution;
-            return view('educational_institution.index', $input);
-        }
         return view('educational_institution.create');
     }
 
-    public function edit()
+    public function selected(Request $request)
     {
-        if (Auth::guest()) {
-            return view('welcome');
-        }
+        Unit::where([
+            'year' => date('Y'),
+            'teacher_id' => $request['teacher_id']
+        ])->update([
+            'educational_institution_id' => $request['educational_institution_id']
+        ]);
 
-        $instance = new EducationalInstitution();
-        $educationalInstitution = $instance->getEducationalInstitutionByUserId(Auth::user()->id);
+        return redirect()->route('educational-institution');
+    }
 
-        return view('educational_institution.edit', $educationalInstitution);
+    public function reset(int $educationalInstitutionId)
+    {
+        $teacher = Teacher::getTeacher();
+        Unit::where([
+            'year' => date('Y'),
+            'teacher_id' => $teacher['id'],
+            'educational_institution_id' => $educationalInstitutionId
+        ])->update([
+            'educational_institution_id' => null
+        ]);
+
+        return redirect()->route('educational-institution');
+    }
+
+    public function edit(int $educationalInstitutionId)
+    {
+        parent::access();
+
+        $params = [
+            'id' => $educationalInstitutionId
+        ];
+        $input['educational_institution'] = EducationalInstitution::getEducationalInstitution($params);
+
+        return view('educational_institution.edit', $input);
     }
 
     public function store(Request $request)
     {
-        if (Auth::guest()) {
-            return view('welcome');
-        }
+        parent::access();
 
         EducationalInstitution::where('id', $request['educational_institution_id'])
             ->update([
-                'full_name' => $request['full_name'],
-                'short_name' => $request['short_name'],
+                'fullname' => $request['fullname'],
+                'shortname' => $request['shortname'],
                 'address' => $request['address']
             ]);
 
@@ -70,21 +104,19 @@ class EducationalInstitutionController extends Controller
 
     public function add(Request $request)
     {
-        if (Auth::guest()) {
-            return view('welcome');
-        }
+        parent::access();
 
         $input = [
-            'full_name' => $request['full_name'],
-            'short_name' => $request['short_name'],
+            'fullname' => $request['fullname'],
+            'shortname' => $request['shortname'],
             'address' => $request['address'],
-            'user_id' => Auth::user()->id
         ];
 
         $educationalInstitution = EducationalInstitution::create($input);
 
         if ($educationalInstitution) {
-            Teacher::where('user_id', Auth::user()->id)
+            $teacher = Teacher::getTeacher();
+            Unit::where(['teacher_id' => $teacher['id']])
                 ->update([
                     'educational_institution_id' => $educationalInstitution->id
                 ]);
@@ -95,9 +127,7 @@ class EducationalInstitutionController extends Controller
 
     public function create()
     {
-        if (Auth::guest()) {
-            return view('welcome');
-        }
+        parent::access();
 
         return view('educational_institution.create');
     }

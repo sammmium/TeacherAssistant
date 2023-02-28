@@ -15,9 +15,9 @@ class CreateTableEducationalInstitutions extends Migration
     {
         Schema::create('educational_institutions', function (Blueprint $table) {
             $table->integerIncrements('id');
-            $table->string('full_name');
-            $table->string('short_name');
-            $table->string('address');
+            $table->string('fullname', 255);
+            $table->string('shortname', 255);
+            $table->string('address', 255);
         });
     }
     /*

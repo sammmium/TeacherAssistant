@@ -16,42 +16,55 @@
 
                     <div class="card-body">
 
-                        <div class="form-group row">
-                            <label for="first_name" class="col-md-4 text-md-right">{{ __('app.pages.teacher.first_name') }}</label>
-
-                            <div class="col-md-6">
-                                <div id="first_name">{{ $teacher['first_name'] }}</div>
-                            </div>
+                        <div class="card-row col-md-12">
+                            <div class="col-md-3 card-row-title">Фамилия</div>
+                            <div class="col-md-7 card-row-value">{{ $teacher['lastname'] }}</div>
+                            <div class="col-md-1 card-row-button text-md-right"></div>
+                            <div class="col-md-1 card-row-button"></div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="last_name" class="col-md-4 text-md-right">{{ __('app.pages.teacher.last_name') }}</label>
-
-                            <div class="col-md-6">
-                                <div id="last_name">{{ $teacher['last_name'] }}</div>
-                            </div>
+                        <div class="card-row col-md-12">
+                            <div class="col-md-3 card-row-title">Имя</div>
+                            <div class="col-md-7 card-row-value">{{ $teacher['firstname'] }}</div>
+                            <div class="col-md-1 card-row-button text-md-right"></div>
+                            <div class="col-md-1 card-row-button"></div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="job_title" class="col-md-4 text-md-right">{{ __('app.pages.teacher.job_title') }}</label>
-
-                            <div class="col-md-6">
-                                <div id="job_title">{{ $teacher['job_title'] }}</div>
-                            </div>
+                        <div class="card-row col-md-12">
+                            <div class="col-md-3 card-row-title">Отчество</div>
+                            <div class="col-md-7 card-row-value">{{ $teacher['patronymic'] }}</div>
+                            <div class="col-md-1 card-row-button text-md-right"></div>
+                            <div class="col-md-1 card-row-button"></div>
                         </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
+                        <div class="card-row col-md-12">
+                            <div class="col-md-3 card-row-title">Дата рождения</div>
+                            <div class="col-md-7 card-row-value">{{ $teacher['birthdate'] }}</div>
+                            <div class="col-md-1 card-row-button text-md-right"></div>
+                            <div class="col-md-1 card-row-button"></div>
+                        </div>
+
+                        <div class="card-row col-md-12">
+                            <div class="col-md-3 card-row-title">Роль (должность)</div>
+                            <div class="col-md-7 card-row-value">{{ $role['value'] }}</div>
+                            <div class="col-md-1 card-row-button text-md-right"></div>
+                            <div class="col-md-1 card-row-button"></div>
+                        </div>
+
+                        <div class="card-row col-md-12">
+                            <div class="col-md-3 card-row-title"></div>
+                            <div class="col-md-7 card-row-value"></div>
+                            <div class="col-md-1 card-row-button text-md-right">
                                 <form method="POST" name="teacher" action="{{ route('teacher-edit') }}">
                                     @csrf
                                     <input type="hidden" name="teacher_id" value="{{ $teacher['id'] }}">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('app.pages.teacher.edit') }}
+                                    <button type="submit" class="btn btn-primary" title="Редактировать">
+                                        <i class="fa fa-solid fa-pencil"></i>
                                     </button>
                                 </form>
                             </div>
+                            <div class="col-md-1 card-row-button"></div>
                         </div>
-
                     </div>
                 </div>
             </div>

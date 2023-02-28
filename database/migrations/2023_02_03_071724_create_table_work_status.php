@@ -16,10 +16,11 @@ class CreateTableWorkStatus extends Migration
         Schema::create('work_status', function (Blueprint $table) {
             $table->integerIncrements('id');
             $table->integer('user_id')->index();
-            $table->integer('group_id')->nullable()->index();
-            $table->integer('subject_id')->nullable()->index();
-            $table->integer('test_id')->nullable()->index();
-            $table->integer('card_id')->nullable()->index();
+            $table->integer('unit_id')->index()->nullable();
+            $table->integer('group_id')->index()->nullable();
+            $table->integer('subject_id')->index()->nullable();
+            $table->integer('test_id')->index()->nullable();
+            $table->integer('card_id')->index()->nullable();
         });
     }
 

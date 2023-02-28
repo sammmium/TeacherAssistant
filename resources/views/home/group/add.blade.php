@@ -13,49 +13,39 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('app.pages.home.main.title') }}</div>
-
-                    <div class="card-body">
-                        <div class="card-row col-md-12">
-                            <div class="col-md-4 card-row-title">
-                                {{ __('app.pages.home.group.add.main.educational_institution') }}
-                            </div>
-                            <div class="col-md-7 card-row-value">
-                                {{ $educational_institution['full_name'] }}
-                            </div>
-                            <div class="col-md-1 card-row-button"></div>
-                        </div>
-
-                        <div class="card-row col-md-12">
-                            <div class="col-md-4 card-row-title">
-                                {{ $teacher['job_title'] }}
-                            </div>
-                            <div class="col-md-7 card-row-value">
-                                {{ $teacher['first_name'] }} {{ $teacher['last_name'] }}
-                            </div>
-                            <div class="col-md-1 card-row-button"></div>
-                        </div>
-                    </div>
-                </div>
-
-                &nbsp;
-
-                <div class="card">
-                    <div class="card-header">{{ __('app.pages.home.group.add.new_group.title') }}</div>
+                    <div class="card-header">Выбор и добавление группы (класса)</div>
 
                     <div class="card-body">
 
-                        <div class="card-row col-md-12">
-                            <div class="col-md-4 card-row-title">
-                                Наименование
+                        <form method="POST" name="group" action="{{ route('home-group-selected') }}">
+                            @csrf
+
+                            <input type="hidden" name="unit_id" value="{{ $unit_id }}">
+                            <input type="hidden" name="unit_group_id" value="{{ $unit_group_id }}">
+
+                            <div class="card-row col-md-12">
+
+                                <div class="col-md-3 card-row-title">Выбор группы (класса)</div>
+                                <div class="col-md-7 card-row-value">
+                                    <select name="group_id" class="form-control">
+                                        @foreach($group_list as $group)
+                                            <option value="{{ $group['id'] }}">{{ $group['value'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-1 card-row-button text-md-right">
+                                    <button type="submit" class="btn btn-primary" title="Выбрать">
+                                        <i class="fa fa-solid fa-check"></i>
+                                    </button>
+                                </div>
+                                <div class="col-md-1 card-row-button">
+                                    <a href="{{ route('dict-group-create') }}" class="btn btn-success" title="Создать новую запись">
+                                        <i class="fa fa-solid fa-plus"></i>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="col-md-7 card-row-value">
-{{--                                <a href="{{ route('home-group-list-add') }}">--}}
-{{--                                    <div class="btn btn-primary col-md-5">Добавить группу</div>--}}
-{{--                                </a>--}}
-                            </div>
-                            <div class="col-md-1 card-row-button"></div>
-                        </div>
+
+                        </form>
                     </div>
                 </div>
             </div>

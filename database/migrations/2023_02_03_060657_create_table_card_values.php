@@ -16,7 +16,7 @@ class CreateTableCardValues extends Migration
         Schema::create('card_values', function (Blueprint $table) {
             $table->integerIncrements('id');
             $table->integer('card_id')->index();
-            $table->integer('code_id')->index();
+            $table->integer('dict_id')->index();
             $table->string('value');
         });
     }

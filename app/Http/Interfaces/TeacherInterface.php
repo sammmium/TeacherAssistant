@@ -7,10 +7,9 @@ interface TeacherInterface
     /**
      * Данные об учителе
      *
-     * @param int $userId
      * @return array
      */
-    public function getTeacher(int $userId): array;
+    public static function getTeacher(): array;
 
     /**
      * Список групп за одним учителем

@@ -3,7 +3,7 @@
 @section('scripts')
     $(document).ready(function() {
         /* подсветка кнопки меню */
-        $('a.button-settings').parent().addClass('selected-button');
+        $('a.button-home').parent().addClass('selected-button');
 
         $('button.group_delete').on('click', function () {
             let answer = confirm('{{ __('are you sure') }}');

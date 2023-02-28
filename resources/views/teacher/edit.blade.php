@@ -21,62 +21,73 @@
                         <form method="POST" name="teacher" action="{{ route('teacher-store') }}">
                             @csrf
 
-                            <div class="form-group row">
-                                <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('app.pages.teacher.first_name') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="first_name" type="text" class="form-control @error('teacher_first_name') is-invalid @enderror" name="first_name" value="{{ $first_name }}" required autocomplete="first_name" autofocus>
-
-                                    @error('teacher_first_name')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                            <div class="card-row col-md-12">
+                                <div class="col-md-3 card-row-title">Фамилия</div>
+                                <div class="col-md-7 card-row-value">
+                                    <input type="text" class="form-control" name="lastname" value="{{ $teacher['lastname'] }}" required autocomplete="lastname" autofocus>
                                 </div>
+                                <div class="col-md-1 card-row-button text-md-right"></div>
+                                <div class="col-md-1 card-row-button"></div>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="last_name" class="col-md-4 col-form-label text-md-right">{{ __('app.pages.teacher.last_name') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="last_name" type="text" class="form-control @error('teacher_last_name') is-invalid @enderror" name="last_name" value="{{ $last_name }}" required autocomplete="last_name" autofocus>
-
-                                    @error('teacher_last_name')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                            <div class="card-row col-md-12">
+                                <div class="col-md-3 card-row-title">Имя</div>
+                                <div class="col-md-7 card-row-value">
+                                    <input type="text" class="form-control" name="firstname" value="{{ $teacher['firstname'] }}" required autocomplete="firstname" autofocus>
                                 </div>
+                                <div class="col-md-1 card-row-button text-md-right"></div>
+                                <div class="col-md-1 card-row-button"></div>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="job_title" class="col-md-4 col-form-label text-md-right">{{ __('app.pages.teacher.job_title') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="job_title" type="text" class="form-control @error('teacher_job_title') is-invalid @enderror" name="job_title" value="{{ $job_title }}" required autocomplete="job_title" autofocus>
-
-                                    @error('teacher_job_title')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                            <div class="card-row col-md-12">
+                                <div class="col-md-3 card-row-title">Отчество</div>
+                                <div class="col-md-7 card-row-value">
+                                    <input type="text" class="form-control" name="patronymic" value="{{ $teacher['patronymic'] }}" required autocomplete="patronymic" autofocus>
                                 </div>
+                                <div class="col-md-1 card-row-button text-md-right"></div>
+                                <div class="col-md-1 card-row-button"></div>
                             </div>
 
-                            <div class="form-group row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <input type="hidden" name="teacher_id" value="{{ $id }}">
+                            <div class="card-row col-md-12">
+                                <div class="col-md-3 card-row-title">Дата рождения</div>
+                                <div class="col-md-7 card-row-value">
+                                    <input type="text" class="form-control" name="birthdate" value="{{ $teacher['birthdate'] }}" required autocomplete="birthdate" autofocus>
+                                </div>
+                                <div class="col-md-1 card-row-button text-md-right"></div>
+                                <div class="col-md-1 card-row-button"></div>
+                            </div>
 
+                            <div class="card-row col-md-12">
+                                <div class="col-md-3 card-row-title">Роль (должность)</div>
+                                <div class="col-md-7 card-row-value">
+                                    <select name="role_id" class="form-control">
+                                        @foreach($roles as $role)
+                                            <option value="{{ $role['id'] }}" @if($role['id'] == $teacher['role_id']) selected @endif>{{ $role['value'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-1 card-row-button text-md-right"></div>
+                                <div class="col-md-1 card-row-button"></div>
+                            </div>
+
+                            <div class="card-row col-md-12">
+                                <div class="col-md-3 card-row-title">
+                                    <input type="hidden" name="teacher_id" value="{{ $teacher['id'] }}">
+                                </div>
+                                <div class="col-md-7 card-row-value"></div>
+                                <div class="col-md-1 card-row-button text-md-right">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ __('app.pages.teacher.submit') }}
+                                        <i class="fa fa-solid fa-save"></i>
                                     </button>
-
-                                    <a class="btn btn-secondary" href="{{ route('teacher') }}">{{ __('app.buttons.back') }}</a>
+                                </div>
+                                <div class="col-md-1 card-row-button">
+                                    <a class="btn btn-secondary" href="{{ route('teacher') }}">
+                                        <i class="fa fa-solid fa-arrow-up"></i>
+                                    </a>
                                 </div>
                             </div>
 
                         </form>
-
                     </div>
                 </div>
             </div>

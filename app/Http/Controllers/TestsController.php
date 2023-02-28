@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Models\Dicts;
+use App\Http\Models\Teacher;
+use App\Http\Models\Tests;
+use App\Http\Models\Unit;
+use App\Http\Models\UnitsGroups;
+use App\Http\Models\UnitsSubjects;
+use App\Http\Models\WorkStatus;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\TemplateProcessor;
 
-class TestController extends Controller
+class TestsController extends MainController
 {
     public function index()
     {
@@ -801,6 +808,61 @@ class TestController extends Controller
         return view('test.card', $input);
     }
 
+    public function add()
+    {
+        $year = date('Y');
+        $teacher = Teacher::getTeacher();
+        $unit = Unit::getUnit($teacher['id'], $year);
+        $ws = WorkStatus::get($teacher['user_id']);
+        $groupId = $ws['group_id'];
+        $subjectId = $ws['subject_id'];
+        $unitGroup = UnitsGroups::getUnitGroup([
+            'unit_id' => $unit['id'],
+            'group_id' => $groupId
+        ]);
+        $unitSubject = UnitsSubjects::getUnitSubject([
+            'unit_group_id' => $unitGroup['id'],
+            'subject_id' => $subjectId
+        ]);
+        $input = [
+            'unit_subject_id' => $unitSubject['id'],
+        ];
+
+        return view('home.test.add', $input);
+    }
+
+    public function create(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|string',
+            'date' => 'required|date',
+            'unit_subject_id' => 'required|numeric',
+        ]);
+        $input = [
+            'name' => $request['name'],
+            'date' => $this->transformDate($request['date'], 'en'),
+            'unit_subject_id' => $request['unit_subject_id'],
+        ];
+        if (!Tests::has($input)) {
+            Tests::create($input);
+        }
+
+        return redirect()->route('home');
+    }
+
+    public function select(int $id)
+    {
+        WorkStatus::set('test_id', $id);
+        $route = WorkStatus::selectRoute();
+
+        return redirect($route);
+    }
+
+    public function reset(Request $request)
+    {
+        var_dump($request->all());exit;
+    }
+
     public function download()
     {
         $templateFileName = 'math_4.docx';
@@ -827,5 +889,28 @@ class TestController extends Controller
     public function store(Request $request)
     {
         var_dump($request->all());exit;
+    }
+
+    public function selected(Request $request)
+    {
+        $this->validate($request, [
+            'unit_group_id' => 'required|numeric',
+            'unit_subject_id' => 'required|numeric',
+            'date' => 'required|date',
+            'name' => 'required|string',
+        ]);
+
+        $input = [
+            'unit_group_id' => (int)$request['unit_group_id'],
+            'unit_subject_id' => (int)$request['unit_subject_id']
+        ];
+
+        if (!Tests::has($input)) {
+            $input['date'] = $this->transformDate($request['date'], 'en');
+            $input['name'] = $request['name'];
+            Tests::create($input);
+        }
+
+        return redirect()->route('home');
     }
 }

@@ -61,7 +61,7 @@ class WorkStatus extends BaseModel
     {
         $userId = Auth::user()->id;
         $row = self::get($userId);
-        $result = '/home/group/list';
+        $result = '/home/groups';
         if (self::hasCardId($row)) {
             $result = self::getRoute($row, 'card');
         } else {
@@ -146,7 +146,7 @@ class WorkStatus extends BaseModel
      * @param int $userId
      * @return array
      */
-    private static function get(int $userId): array
+    public static function get(int $userId): array
     {
         $sql = 'select * from work_status where user_id = :userId';
         $params = ['userId' => $userId];

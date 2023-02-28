@@ -16,31 +16,44 @@
 
                     <div class="card-body">
                         <div class="card-row col-md-12">
-                            <div class="col-md-4 card-row-title">
+                            <div class="col-md-3 card-row-title">
+                                Учебный год
+                            </div>
+                            <div class="col-md-7 card-row-value">
+                                {{ $year }}
+                            </div>
+                            <div class="col-md-1 card-row-button"></div>
+                            <div class="col-md-1 card-row-button"></div>
+                        </div>
+
+                        <div class="card-row col-md-12">
+                            <div class="col-md-3 card-row-title">
                                 Наименование учреждения
                             </div>
                             <div class="col-md-7 card-row-value">
-                                {{ $educational_institution['full_name'] }}
+                                {{ $educational_institution['fullname'] }}
                             </div>
+                            <div class="col-md-1 card-row-button"></div>
                             <div class="col-md-1 card-row-button"></div>
                         </div>
 
                         <div class="card-row col-md-12">
-                            <div class="col-md-4 card-row-title">
-                                {{ $teacher['job_title'] }}
+                            <div class="col-md-3 card-row-title">
+                                {{ $role['value'] }}
                             </div>
                             <div class="col-md-7 card-row-value">
-                                {{ $teacher['first_name'] }} {{ $teacher['last_name'] }}
+                                {{ $teacher['firstname'] }} {{ $teacher['lastname'] }}
                             </div>
+                            <div class="col-md-1 card-row-button"></div>
                             <div class="col-md-1 card-row-button"></div>
                         </div>
 
                         <div class="card-row col-md-12">
-                            <div class="col-md-4 card-row-title">
+                            <div class="col-md-3 card-row-title">
                                 Класс
                             </div>
                             <div class="col-md-7 card-row-value">
-                                {{ $group['name'] }}
+                                {{ $group['value'] }}
                             </div>
                             <div class="col-md-1 card-row-button">
                                 <form method="POST" action="{{ route('group-list-return') }}">
@@ -50,6 +63,7 @@
                                     </button>
                                 </form>
                             </div>
+                            <div class="col-md-1 card-row-button"></div>
                         </div>
                     </div>
                 </div>
@@ -62,22 +76,33 @@
                     <div class="card-body">
                         @foreach($subject_list as $subject)
                             <div class="card-row col-md-12">
-                                <div class="col-md-4 card-row-title"></div>
+                                <div class="col-md-3 card-row-title"></div>
                                 <div class="col-md-7 card-row-value">
                                     <a href="{{ route('home-subject-index', $subject['id']) }}" title="Выбрать предмет">
                                         <div class="btn btn-secondary col-md-5">{{ $subject['name'] }}</div>
                                     </a>
                                 </div>
                                 <div class="col-md-1 card-row-button"></div>
+                                <div class="col-md-1 card-row-button">
+                                    <form method="POST" name="group" action="{{ route('home-subject-reset') }}">
+                                        @csrf
+                                        <input type="hidden" name="group_id" value="{{ $group['id'] }}">
+                                        <input type="hidden" name="subject_id" value="{{ $subject['id'] }}">
+                                        <button class="btn btn-danger" title="Открепить предмет">
+                                            <i class="fa fa-solid fa-cancel"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         @endforeach
                         <div class="card-row col-md-12">
-                            <div class="col-md-4 card-row-title"></div>
+                            <div class="col-md-3 card-row-title"></div>
                             <div class="col-md-7 card-row-value">
-                                <a href="#">
+                                <a href="{{ route('home-subject-add') }}">
                                     <div class="btn btn-primary col-md-5">Добавить предмет</div>
                                 </a>
                             </div>
+                            <div class="col-md-1 card-row-button"></div>
                             <div class="col-md-1 card-row-button"></div>
                         </div>
                     </div>

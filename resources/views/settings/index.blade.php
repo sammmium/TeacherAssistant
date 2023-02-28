@@ -12,33 +12,27 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('app.pages.settings.require.title') }}</div>
+                    <div class="card-header">Настройки</div>
 
                     <div class="card-body">
-                        <div class="info">
-                            {{ __('app.pages.settings.require.info') }}
+                        <div class="card-row col-md-12">
+                            <div class="col-md-4 card-row-title"></div>
+                            <div class="col-md-7 card-row-value">
+                                <a href="{{ route('teacher') }}">
+                                    <div class="btn btn-secondary col-md-5">Учитель</div>
+                                </a>
+                            </div>
+                            <div class="col-md-1 card-row-button"></div>
                         </div>
 
-                        <div class="links-container">
-                            <a href="{{ url('/teacher') }}">{{ __('app.pages.settings.teacher') }}</a>
-                            <a href="{{ url('/educational_institution') }}">{{ __('app.pages.settings.educational_institution') }}</a>
-                        </div>
-                    </div>
-                </div>
-
-                &nbsp;
-
-                <div class="card">
-                    <div class="card-header">{{ __('app.pages.settings.option.title') }}</div>
-
-                    <div class="card-body">
-                        <div class="info">
-                            {{ __('app.pages.settings.option.info') }}
-                        </div>
-
-                        <div class="links-container">
-                            <a href="{{ url('/group') }}">{{ __('app.pages.settings.group') }}</a>
-{{--                            <a href="{{ url('/educational_institution') }}">{{ __('app.pages.settings.educational_institution') }}</a>--}}
+                        <div class="card-row col-md-12">
+                            <div class="col-md-4 card-row-title"></div>
+                            <div class="col-md-7 card-row-value">
+                                <a href="{{ route('educational-institution') }}">
+                                    <div class="btn btn-secondary col-md-5">Учебное заведение</div>
+                                </a>
+                            </div>
+                            <div class="col-md-1 card-row-button"></div>
                         </div>
                     </div>
                 </div>
