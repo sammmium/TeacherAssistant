@@ -171,11 +171,19 @@
                                         </form>
                                     @endif
                                 </div>
-                                <div class="col-md-4 card-row-value">{{ $member['member'] }}</div>
+                                <div class="col-md-4 card-row-value">
+                                    @if(!empty($member['member']['fio']))
+                                        <a href="{{ route('card-index', $member['member']['id']) }}">
+                                            <div class="btn btn-{{ $member['member']['filled'] }} col-md-12">{{ $member['member']['fio'] }}</div>
+                                        </a>
+                                    @endif
+                                </div>
                                 <div class="col-md-1 card-row-button"></div>
                                 <div class="col-md-1 card-row-button"></div>
                             </div>
                         @endforeach
+
+                        <hr>
 
                         <div class="card-row col-md-12">
                             <div class="col-md-1 card-row-title"></div>

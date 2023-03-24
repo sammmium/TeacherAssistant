@@ -69,9 +69,7 @@ class Unit extends BaseModel
 
     public static function check(): bool
     {
-//        parent::init();
         if (!self::checkTeacher(new Teacher())) return false;
-//        if (!self::checkEducationalInstitution(new EducationalInstitution())) return false;
         return true;
     }
 
@@ -83,7 +81,6 @@ class Unit extends BaseModel
      */
     public static function checkEducationalInstitution(int $teacherId): bool
     {
-//        var_dump(EducationalInstitution::check($teacherId));exit;
         return EducationalInstitution::check($teacherId);
     }
 
@@ -95,5 +92,14 @@ class Unit extends BaseModel
     public static function checkTeacher(): bool
     {
         return Teacher::check();
+    }
+
+    public static function getTeacherId(array $params): array
+    {
+        return self::prepare(DB::table('units')
+            ->select(['teacher_id'])
+            ->where('id', '=', $params['unit_id'])
+            ->get()
+        );
     }
 }

@@ -64,6 +64,22 @@ class Dicts extends BaseModel
         );
     }
 
+    public static function getCodeList(string $code): array
+    {
+        $dict = self::getOptions($code);
+        $result = [];
+        if (count($dict)) {
+            foreach ($dict as $item) {
+                $result[] = [
+                    'id' => $item['id'],
+                    'code' => $item['code'],
+                ];
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * Получение дочерних записей из справочника
      * по коду их родителя
@@ -88,6 +104,7 @@ class Dicts extends BaseModel
                     ->where($subQueryOptions);
             })
             ->get(),
+
             true
         );
     }
@@ -142,6 +159,7 @@ class Dicts extends BaseModel
             ['parent_id' => null, 'code' => 'roles', 'value' => 'Роли'],
             ['parent_id' => null, 'code' => 'subjects', 'value' => 'Предметы'],
             ['parent_id' => null, 'code' => 'groups', 'value' => 'Классы'],
+            ['parent_id' => null, 'code' => 'card_codes', 'value' => 'Коды карточек'],
 
             ['parent_id' => 1, 'code' => 'pupil', 'value' => 'Ученик'],
             ['parent_id' => 1, 'code' => 'teacher', 'value' => 'Учитель начальных классов'],
@@ -152,39 +170,39 @@ class Dicts extends BaseModel
             ['parent_id' => 2, 'code' => 'ruslit', 'value' => 'Русская литература'],
             ['parent_id' => 2, 'code' => 'bellit', 'value' => 'Белорусская литература'],
 
-            ['parent_id' => 3, 'code' => 'g1', 'value' => '1 класс'],
-            ['parent_id' => 3, 'code' => 'g1a', 'value' => '1 "А" класс'],
-            ['parent_id' => 3, 'code' => 'g1b', 'value' => '1 "Б" класс'],
-            ['parent_id' => 3, 'code' => 'g2', 'value' => '2 класс'],
-            ['parent_id' => 3, 'code' => 'g2a', 'value' => '2 "А" класс'],
-            ['parent_id' => 3, 'code' => 'g2b', 'value' => '2 "Б" класс'],
-            ['parent_id' => 3, 'code' => 'g3', 'value' => '3 класс'],
-            ['parent_id' => 3, 'code' => 'g3a', 'value' => '3 "А" класс'],
-            ['parent_id' => 3, 'code' => 'g3b', 'value' => '3 "Б" класс'],
-            ['parent_id' => 3, 'code' => 'g4', 'value' => '4 класс'],
-            ['parent_id' => 3, 'code' => 'g4a', 'value' => '4 "А" класс'],
-            ['parent_id' => 3, 'code' => 'g4b', 'value' => '4 "Б" класс'],
-            ['parent_id' => 3, 'code' => 'g5', 'value' => '5 класс'],
-            ['parent_id' => 3, 'code' => 'g5a', 'value' => '5 "А" класс'],
-            ['parent_id' => 3, 'code' => 'g5b', 'value' => '5 "Б" класс'],
-            ['parent_id' => 3, 'code' => 'g6', 'value' => '6 класс'],
-            ['parent_id' => 3, 'code' => 'g6a', 'value' => '6 "А" класс'],
-            ['parent_id' => 3, 'code' => 'g6b', 'value' => '6 "Б" класс'],
-            ['parent_id' => 3, 'code' => 'g7', 'value' => '7 класс'],
-            ['parent_id' => 3, 'code' => 'g7a', 'value' => '7 "А" класс'],
-            ['parent_id' => 3, 'code' => 'g7b', 'value' => '7 "Б" класс'],
-            ['parent_id' => 3, 'code' => 'g8', 'value' => '8 класс'],
-            ['parent_id' => 3, 'code' => 'g8a', 'value' => '8 "А" класс'],
-            ['parent_id' => 3, 'code' => 'g8b', 'value' => '8 "Б" класс'],
-            ['parent_id' => 3, 'code' => 'g9', 'value' => '9 класс'],
-            ['parent_id' => 3, 'code' => 'g9a', 'value' => '9 "А" класс'],
-            ['parent_id' => 3, 'code' => 'g9b', 'value' => '9 "Б" класс'],
-            ['parent_id' => 3, 'code' => 'g10', 'value' => '10 класс'],
-            ['parent_id' => 3, 'code' => 'g10a', 'value' => '10 "А" класс'],
-            ['parent_id' => 3, 'code' => 'g10b', 'value' => '10 "Б" класс'],
-            ['parent_id' => 3, 'code' => 'g11', 'value' => '11 класс'],
-            ['parent_id' => 3, 'code' => 'g11a', 'value' => '11 "А" класс'],
-            ['parent_id' => 3, 'code' => 'g11b', 'value' => '11 "Б" класс'],
+            ['parent_id' => 3, 'code' => 'gr_1', 'value' => '1 класс'],
+            ['parent_id' => 3, 'code' => 'gr_1_a', 'value' => '1 "А" класс'],
+            ['parent_id' => 3, 'code' => 'gr_1_b', 'value' => '1 "Б" класс'],
+            ['parent_id' => 3, 'code' => 'gr_2', 'value' => '2 класс'],
+            ['parent_id' => 3, 'code' => 'gr_2_a', 'value' => '2 "А" класс'],
+            ['parent_id' => 3, 'code' => 'gr_2_b', 'value' => '2 "Б" класс'],
+            ['parent_id' => 3, 'code' => 'gr_3', 'value' => '3 класс'],
+            ['parent_id' => 3, 'code' => 'gr_3_a', 'value' => '3 "А" класс'],
+            ['parent_id' => 3, 'code' => 'gr_3_b', 'value' => '3 "Б" класс'],
+            ['parent_id' => 3, 'code' => 'gr_4', 'value' => '4 класс'],
+            ['parent_id' => 3, 'code' => 'gr_4_a', 'value' => '4 "А" класс'],
+            ['parent_id' => 3, 'code' => 'gr_4_b', 'value' => '4 "Б" класс'],
+            ['parent_id' => 3, 'code' => 'gr_5', 'value' => '5 класс'],
+            ['parent_id' => 3, 'code' => 'gr_5_a', 'value' => '5 "А" класс'],
+            ['parent_id' => 3, 'code' => 'gr_5_b', 'value' => '5 "Б" класс'],
+            ['parent_id' => 3, 'code' => 'gr_6', 'value' => '6 класс'],
+            ['parent_id' => 3, 'code' => 'gr_6_a', 'value' => '6 "А" класс'],
+            ['parent_id' => 3, 'code' => 'gr_6_b', 'value' => '6 "Б" класс'],
+            ['parent_id' => 3, 'code' => 'gr_7', 'value' => '7 класс'],
+            ['parent_id' => 3, 'code' => 'gr_7_a', 'value' => '7 "А" класс'],
+            ['parent_id' => 3, 'code' => 'gr_7_b', 'value' => '7 "Б" класс'],
+            ['parent_id' => 3, 'code' => 'gr_8', 'value' => '8 класс'],
+            ['parent_id' => 3, 'code' => 'gr_8_a', 'value' => '8 "А" класс'],
+            ['parent_id' => 3, 'code' => 'gr_8_b', 'value' => '8 "Б" класс'],
+            ['parent_id' => 3, 'code' => 'gr_9', 'value' => '9 класс'],
+            ['parent_id' => 3, 'code' => 'gr_9_a', 'value' => '9 "А" класс'],
+            ['parent_id' => 3, 'code' => 'gr_9_b', 'value' => '9 "Б" класс'],
+            ['parent_id' => 3, 'code' => 'gr_10', 'value' => '10 класс'],
+            ['parent_id' => 3, 'code' => 'gr_10_a', 'value' => '10 "А" класс'],
+            ['parent_id' => 3, 'code' => 'gr_10_b', 'value' => '10 "Б" класс'],
+            ['parent_id' => 3, 'code' => 'gr_11', 'value' => '11 класс'],
+            ['parent_id' => 3, 'code' => 'gr_11_a', 'value' => '11 "А" класс'],
+            ['parent_id' => 3, 'code' => 'gr_11_b', 'value' => '11 "Б" класс'],
         ];
 
         DB::table('dicts')

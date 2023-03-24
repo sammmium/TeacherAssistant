@@ -84,4 +84,19 @@ class Teacher extends TEI implements TeacherInterface
     {
         return $this->getTeacher(Auth::user()->id)['id'];
     }
+
+    public static function getTeacherFio(array $params): string
+    {
+        $teacher = self::getById($params['id']);
+        return parent::getFIO($teacher);
+    }
+
+    public static function getById(int $id): array
+    {
+        return self::prepare(DB::table('people')
+            ->select('*')
+            ->where('id', '=', $id)
+            ->get()
+        );
+    }
 }

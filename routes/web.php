@@ -104,15 +104,34 @@ Route::get('/home/test/{id}', 'HomeController@test_index')->name('home-test-inde
 
 Route::post('/home/test/list', 'HomeController@test_list')->name('home-test-list');
 
-Route::post('/home/test/download', 'HomeController@test_download')->name('home-test-download');
-
 // переход к форме наполнения списка учеников для выбранного класса
 Route::get('/home/group/{id}/fill', 'UnitsGroupsController@group_fill')->name('group-pupil-add');
+Route::get('/home/group/pupil/{id}/edit', 'UnitsGroupsController@group_pupil_edit')->name('group-pupil-edit');
+Route::get('/home/group/{id}/pupil/create', 'UnitsGroupsController@group_pupil_create')->name('group-pupil-create');
+Route::post('/home/group/pupil/store', 'UnitsGroupsController@group_pupil_store')->name('group-pupil-store');
+Route::post('/home/group/pupil/delete', 'UnitsGroupsController@group_pupil_delete')->name('group-pupil-delete');
 
 Route::post('/home/member/add', 'HomeController@add_member')->name('add_member');
 Route::post('/home/member/reset', 'HomeController@reset_member')->name('reset_member');
 
 Route::get('/settings', 'SettingsController@index')->name('settings');
+
+Route::get('/ugp/{id}/card/index', 'CardsController@index')->name('card-index');
+Route::post('/ugp/{id}/card/store', 'CardsController@store')->name('card-store');
+
+// список учеников
+Route::post('/home/card/list', 'HomeController@card_list')->name('home-card-list');
+
+
+
+Route::post('/home/test/download', 'TestsController@download')->name('home-test-download');
+
+
+
+
+
+
+
 //
 //
 //
@@ -148,7 +167,6 @@ Route::get('/settings', 'SettingsController@index')->name('settings');
 //
 //Route::get('/home/card/{id}', 'HomeController@card_index')->name('home-card-index');
 //Route::post('/home/card/store', 'HomeController@card_store')->name('home-card-store');
-//Route::post('/home/card/list', 'HomeController@card_list')->name('home-card-list');
 //
 //
 //Route::get('/home/pupil/{id}', 'HomeController@pupil_index')->name('home-pupil-index');

@@ -12,7 +12,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Редактирование ученика группы (класса): {{ $group['value'] }}</div>
+                    <div class="card-header">Добавление ученика группы (класса): {{ $group['value'] }}</div>
 
                     <div class="card-body">
                         <div class="card-row col-md-12">
@@ -34,7 +34,7 @@
                             <div class="card-row col-md-12">
                                 <div class="col-md-3 card-row-title">Фамилия *</div>
                                 <div class="col-md-7 card-row-value">
-                                    <input type="text" name="lastname" class="col-md-7" value="@if(!empty($pupil['lastname'])){{ $pupil['lastname'] }}@else{{ old('lastname') }}@endif">
+                                    <input type="text" name="lastname" class="col-md-7" value="{{ old('lastname') }}">
                                 </div>
                                 <div class="col-md-1 card-row-button"></div>
                                 <div class="col-md-1 card-row-button"></div>
@@ -43,7 +43,7 @@
                             <div class="card-row col-md-12">
                                 <div class="col-md-3 card-row-title">Имя *</div>
                                 <div class="col-md-7 card-row-value">
-                                    <input type="text" name="firstname" class="col-md-7" value="@if(!empty($pupil['firstname'])){{ $pupil['firstname'] }}@else{{ old('firstname') }}@endif">
+                                    <input type="text" name="firstname" class="col-md-7" value="{{ old('firstname') }}">
                                 </div>
                                 <div class="col-md-1 card-row-button"></div>
                                 <div class="col-md-1 card-row-button"></div>
@@ -52,7 +52,7 @@
                             <div class="card-row col-md-12">
                                 <div class="col-md-3 card-row-title">Отчество</div>
                                 <div class="col-md-7 card-row-value">
-                                    <input type="text" name="patronymic" class="col-md-7" value="@if(!empty($pupil['patronymic'])){{ $pupil['patronymic'] }}@else{{ old('patronymic') }}@endif">
+                                    <input type="text" name="patronymic" class="col-md-7" value="{{ old('patronymic') }}">
                                 </div>
                                 <div class="col-md-1 card-row-button"></div>
                                 <div class="col-md-1 card-row-button"></div>
@@ -61,7 +61,7 @@
                             <div class="card-row col-md-12">
                                 <div class="col-md-3 card-row-title">Дата рождения *</div>
                                 <div class="col-md-7 card-row-value">
-                                    <input type="text" name="birthdate" class="col-md-7" value="@if(!empty($pupil['birthdate'])){{ $pupil['birthdate'] }}@else{{ old('birthdate') }}@endif">
+                                    <input type="text" name="birthdate" class="col-md-7" value="{{ old('birthdate') }}">
                                 </div>
                                 <div class="col-md-1 card-row-button"></div>
                                 <div class="col-md-1 card-row-button"></div>
@@ -70,7 +70,7 @@
                             <div class="card-row col-md-12">
                                 <div class="col-md-3 card-row-title">Описание</div>
                                 <div class="col-md-7 card-row-value">
-                                    <input type="text" name="description" class="col-md-7" value="@if(!empty($pupil['description'])){{ $pupil['description'] }}@else{{ old('description') }}@endif">
+                                    <input type="text" name="description" class="col-md-7" value="{{ old('description') }}">
                                 </div>
                                 <div class="col-md-1 card-row-button"></div>
                                 <div class="col-md-1 card-row-button"></div>

@@ -204,10 +204,9 @@ class HomeController extends MainController
             'group' => $group,
             'subject' => $subject,
             'test' => $test,
-//            'pupil_list' => $pupilList,
             'member_list' => $memberList
         ];
-//        var_dump($input);exit;
+//        var_dump($memberList);exit;
 
         return view('home.pupil.list', $input);
     }
@@ -239,59 +238,6 @@ class HomeController extends MainController
         $route = WorkStatus::selectRoute();
 
         return redirect($route);
-    }
-
-    public function card_store(Request $request)
-    {
-        var_dump($request->all());exit;
-
-        $request['subject_id'];
-        $request['group_id'];
-        $request['test_id'];
-        $request['pupil_id'];
-        $request['range'];
-
-        $request['eq_woe'];
-        $request['eq_eis'];
-        $request['eq_eic'];
-        $request['eq_wr'];
-
-        $request['ex_woe'];
-        $request['ex_eio'];
-        $request['ex_eca'];
-        $request['ex_ecs'];
-        $request['ex_ecm'];
-        $request['ex_ecd'];
-        $request['ex_wr'];
-
-        $request['co_woe'];
-        $request['co_n'];
-        $request['co_ne'];
-        $request['co_dcn'];
-        $request['co_en'];
-        $request['co_lv'];
-        $request['co_mv'];
-        $request['co_tv'];
-        $request['co_wr'];
-
-        $request['t_woe'];
-        $request['t_dd'];
-        $request['t_dc'];
-        $request['t_wr'];
-
-        $request['gt_woe'];
-        $request['gt_dd'];
-        $request['gt_dc'];
-        $request['gt_ded'];
-        $request['gt_wr'];
-
-        $request['cv_woe'];
-        $request['cv_l'];
-        $request['cv_m'];
-        $request['cv_t'];
-        $request['cv_wr'];
-
-        $request['fx'];
     }
 
     private function test_data(): array
@@ -696,29 +642,29 @@ class HomeController extends MainController
         return $input;
     }
 
-    public function test_download()
-    {
-        $templateFileName = 'math_4.docx';
-        $templatePath = public_path('templates');
-        $templateFile = $templatePath . '/' . $templateFileName;
-        $document = new TemplateProcessor($templateFile);
-
-        $data = $this->getDownloadData();
-        foreach ($data as $key => $value) {
-            if (!is_array($value)) {
-                $document->setValue($key, $value);
-            }
-        }
-
-        header('Content-Description: File Transfer');
-        header('Content-Disposition: attachment; filename="' . $templateFileName . '"');
-        header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-        header('Content-Transfer-Encoding: binary');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Expires: 0');
-
-        $document->saveAs("php://output");
-    }
+//    public function test_download()
+//    {
+//        $templateFileName = 'math_4.docx';
+//        $templatePath = public_path('templates');
+//        $templateFile = $templatePath . '/' . $templateFileName;
+//        $document = new TemplateProcessor($templateFile);
+//
+//        $data = $this->getDownloadData();
+//        foreach ($data as $key => $value) {
+//            if (!is_array($value)) {
+//                $document->setValue($key, $value);
+//            }
+//        }
+//
+//        header('Content-Description: File Transfer');
+//        header('Content-Disposition: attachment; filename="' . $templateFileName . '"');
+//        header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+//        header('Content-Transfer-Encoding: binary');
+//        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+//        header('Expires: 0');
+//
+//        $document->saveAs("php://output");
+//    }
 
     private function getDownloadData(): array
     {
@@ -838,55 +784,55 @@ class HomeController extends MainController
         ] + $ranges + $level + $task_analyze + $full_analyze + $questions + $personal_analyzis;
     }
 
-    private function getPercent(int $total = 0, int $part = 0)
-    {
-        if ($total > 0) {
-            if ($part > 0) {
-                $result = $part / $total * 100;
-                return round($result, 2);
-            }
-        }
+//    private function getPercent(int $total = 0, int $part = 0)
+//    {
+//        if ($total > 0) {
+//            if ($part > 0) {
+//                $result = $part / $total * 100;
+//                return round($result, 2);
+//            }
+//        }
+//
+//        return 0;
+//    }
 
-        return 0;
-    }
+//    private function getAverage(array $ranges, int $count_members)
+//    {
+//        $total = 0;
+//        foreach ($ranges as $key => $value) {
+//            if (strpos($key, 'cm_') !== false) {
+//                switch ($key) {
+//                    case 'cm_10': $total = $this->getAVG($total, 10, $value); break;
+//                    case 'cm_9': $total = $this->getAVG($total, 9, $value); break;
+//                    case 'cm_8': $total = $this->getAVG($total, 8, $value); break;
+//                    case 'cm_7': $total = $this->getAVG($total, 7, $value); break;
+//                    case 'cm_6': $total = $this->getAVG($total, 6, $value); break;
+//                    case 'cm_5': $total = $this->getAVG($total, 5, $value); break;
+//                    case 'cm_4': $total = $this->getAVG($total, 4, $value); break;
+//                    case 'cm_3': $total = $this->getAVG($total, 3, $value); break;
+//                    case 'cm_2': $total = $this->getAVG($total, 2, $value); break;
+//                    case 'cm_1': $total = $this->getAVG($total, 1, $value); break;
+//                }
+//            }
+//        }
+//
+//        if ($total > 0) {
+//            if ($count_members > 0) {
+//                return ceil($total / $count_members);
+//            }
+//        }
+//
+//        return 0;
+//    }
 
-    private function getAverage(array $ranges, int $count_members)
-    {
-        $total = 0;
-        foreach ($ranges as $key => $value) {
-            if (strpos($key, 'cm_') !== false) {
-                switch ($key) {
-                    case 'cm_10': $total = $this->getAVG($total, 10, $value); break;
-                    case 'cm_9': $total = $this->getAVG($total, 9, $value); break;
-                    case 'cm_8': $total = $this->getAVG($total, 8, $value); break;
-                    case 'cm_7': $total = $this->getAVG($total, 7, $value); break;
-                    case 'cm_6': $total = $this->getAVG($total, 6, $value); break;
-                    case 'cm_5': $total = $this->getAVG($total, 5, $value); break;
-                    case 'cm_4': $total = $this->getAVG($total, 4, $value); break;
-                    case 'cm_3': $total = $this->getAVG($total, 3, $value); break;
-                    case 'cm_2': $total = $this->getAVG($total, 2, $value); break;
-                    case 'cm_1': $total = $this->getAVG($total, 1, $value); break;
-                }
-            }
-        }
-
-        if ($total > 0) {
-            if ($count_members > 0) {
-                return ceil($total / $count_members);
-            }
-        }
-
-        return 0;
-    }
-
-    private function getAVG(int $total, int $range, int $value = 0)
-    {
-        if ($value > 0) {
-            return $total + ($range * $value);
-        }
-
-        return $total;
-    }
+//    private function getAVG(int $total, int $range, int $value = 0)
+//    {
+//        if ($value > 0) {
+//            return $total + ($range * $value);
+//        }
+//
+//        return $total;
+//    }
 
     public function group_list_add()
     {

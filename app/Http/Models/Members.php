@@ -8,17 +8,20 @@ class Members extends BaseModel
 
     protected static $members;
 
-    protected static function fillPupils()
+    private static function isFilled(array $member): string
     {
+        $result = 'primary';
 
+        if (!empty($member['filled'])) {
+            if ($member['filled'] > 0) {
+                $result = 'success';
+            }
+        }
+
+        return $result;
     }
 
-    protected static function fillMembers()
-    {
-
-    }
-
-    public static function getMembers(array $pupilList, int $testId)
+    public static function getMembers(array $pupilList, int $testId): array
     {
         $pupilsMembers = [];
 
@@ -27,13 +30,15 @@ class Members extends BaseModel
             $pupilsMembers[] = [
                 'unit_group_pupil_id' => $pupil['id'],
                 'pupil' => self::getFIO($pupil),
-                'member' => self::getFIO($member),
+                'member' => [
+                    'id' => $pupil['id'],
+                    'fio' => self::getFIO($member),
+                    'filled' => self::isFilled($member)
+                ],
                 'card_id' => !empty($member['id']) ? $member['id'] : ''
             ];
         }
 
         return $pupilsMembers;
     }
-
-
 }

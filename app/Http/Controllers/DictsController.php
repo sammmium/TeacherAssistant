@@ -57,12 +57,12 @@ class DictsController extends MainController
         $input['selected'] = Dicts::getById($input['item']['parent_id']);
 
         return view('dicts.edit', $input);
-//        var_dump('edit dict #'.$id);exit;
     }
 
     public function update(Request $request)
     {
         $update = [
+            'code' => $request['code'],
             'value' => $request['value'],
             'description' => $request['description'],
         ];

@@ -102,9 +102,9 @@ class BaseModel extends Model
     protected static function getFIO(array $person): string
     {
         $separator = ' ';
-        $result = !empty($person['lastname']) ? $person['lastname'] . $separator : '';
-        $result .= !empty($person['firstname']) ? $person['firstname'] . $separator : '';
-        $result .= !empty($person['patronymic']) ? $person['patronymic'] : '';
+        $result = !empty($person['lastname']) ? $person['lastname'] : '';
+        $result .= !empty($person['firstname']) ? $separator . $person['firstname'] : '';
+        $result .= !empty($person['patronymic']) ? $separator . $person['patronymic'] : '';
         return $result;
     }
 
