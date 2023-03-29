@@ -882,7 +882,14 @@ class TestsController extends MainController
         $templateFile = $templatePath . '/' . $templateFileName;
         $document = new TemplateProcessor($templateFile);
 
+        $third_table = $input['third_table'];
+//        var_dump($third_table);exit;
+        unset($input['third_table']);
+        unset($input['member_id_list']);
+//        var_dump($input);exit;
         $document->setValues($input);
+
+        $document->cloneRowAndSetValues('xtr_tq', $third_table);
 
         header("Content-Description: File Transfer");
         header('Content-Disposition: attachment; filename="' . $templateFileName . '"');

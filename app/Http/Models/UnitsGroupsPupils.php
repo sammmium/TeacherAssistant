@@ -26,7 +26,13 @@ class UnitsGroupsPupils extends BaseModel
     public static function getPupilList(array $params): array
     {
         return self::prepare(DB::table('units_groups_pupils as ugp')
-            ->select(['ugp.id as id', 'p.lastname as lastname', 'p.firstname as firstname', 'p.patronymic as patronymic'])
+            ->select([
+                'ugp.id as id',
+                'p.id as pupil_id',
+                'p.lastname as lastname',
+                'p.firstname as firstname',
+                'p.patronymic as patronymic'
+            ])
             ->leftJoin('people as p', 'ugp.pupil_id', '=', 'p.id')
             ->where([
                 'ugp.unit_group_id' => $params['unit_group_id'],

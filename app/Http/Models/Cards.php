@@ -2,6 +2,7 @@
 
 namespace App\Http\Models;
 
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 
 class Cards extends BaseModel
@@ -118,5 +119,38 @@ class Cards extends BaseModel
             ->where('d.code', '=', 'range')
             ->where('cv.value', '=', $range)
             ->count('c.id');
+    }
+
+    public static function countBy(int $testId, string $key): int
+    {
+        return DB::table('cards as c')
+            ->leftJoin('card_values as cv', 'c.id', '=', 'cv.card_id')
+            ->leftJoin('dicts as d', 'cv.dict_id', '=', 'd.id')
+            ->where('c.test_id', '=', $testId)
+            ->where('d.code', '=', $key)
+            ->count('c.id');
+    }
+
+    public static function getPupilsQuestions(array $params): array
+    {
+        return self::prepare(DB::table('units_groups_pupils as ugp')
+            ->select([
+                'ugp.pupil_id as pupil_id',
+                'd.code as code',
+                'd.value as value',
+                'd.description as description',
+            ])
+            ->leftJoin('cards as c', function (JoinClause $join) use ($params) {
+                $join->on('ugp.id', '=', 'c.unit_group_pupil_id')
+                    ->where('c.test_id', '=', $params['test_id']);
+            })
+            ->leftJoin('card_values as cv', 'c.id', '=', 'cv.card_id')
+            ->leftJoin('dicts as d', 'cv.dict_id', '=', 'd.id')
+            ->where('ugp.pupil_id', '=', $params['pupil_id'])
+            ->where('ugp.unit_group_id', '=', $params['unit_group_id'])
+            ->get(),
+
+            true
+        );
     }
 }

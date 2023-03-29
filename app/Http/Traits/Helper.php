@@ -21,4 +21,13 @@ trait Helper
         }
         return $date;
     }
+
+    protected static function getFIO(array $person): string
+    {
+        $separator = ' ';
+        $result = !empty($person['lastname']) ? $person['lastname'] : '';
+        $result .= !empty($person['firstname']) ? $separator . $person['firstname'] : '';
+        $result .= !empty($person['patronymic']) ? $separator . $person['patronymic'] : '';
+        return $result;
+    }
 }

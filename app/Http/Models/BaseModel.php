@@ -2,12 +2,15 @@
 
 namespace App\Http\Models;
 
+use App\Http\Traits\Helper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class BaseModel extends Model
 {
+	use Helper;
+
     public static function init()
     {
         if (Auth::user()) {
@@ -98,17 +101,4 @@ class BaseModel extends Model
 
         return  $result;
     }
-
-    protected static function getFIO(array $person): string
-    {
-        $separator = ' ';
-        $result = !empty($person['lastname']) ? $person['lastname'] : '';
-        $result .= !empty($person['firstname']) ? $separator . $person['firstname'] : '';
-        $result .= !empty($person['patronymic']) ? $separator . $person['patronymic'] : '';
-        return $result;
-    }
-
-
-
-
 }

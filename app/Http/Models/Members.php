@@ -32,6 +32,7 @@ class Members extends BaseModel
                 'pupil' => self::getFIO($pupil),
                 'member' => [
                     'id' => $pupil['id'],
+                    'pupil_id' => $pupil['pupil_id'],
                     'fio' => self::getFIO($member),
                     'filled' => self::isFilled($member)
                 ],

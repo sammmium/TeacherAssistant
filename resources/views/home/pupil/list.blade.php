@@ -119,6 +119,7 @@
                                     <input type="hidden" name="group_id" value="{{ $group['id'] }}">
                                     <input type="hidden" name="subject_id" value="{{ $subject['id'] }}">
                                     <input type="hidden" name="test_id" value="{{ $test['id'] }}">
+                                    <input type="hidden" name="member_id_list" value="{{ $member_id_list }}">
                                     <button class="btn btn-success col-md-5" type="submit">
                                         Скачать
                                     </button>
