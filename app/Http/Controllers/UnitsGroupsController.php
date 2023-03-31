@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Auth;
 
 class UnitsGroupsController extends MainController
 {
+    use Helper;
+
     public function index()
     {
         $year = date('Y');
@@ -192,7 +194,7 @@ class UnitsGroupsController extends MainController
             'user_id' => (int)$userId,
         ];
         if (!empty($request['birthdate'])) {
-            $input['birthdate'] = $this->transformDate($request['birthdate'], 'en');
+            $input['birthdate'] = self::transformDate($request['birthdate'], 'en');
         }
         $pupil = People::create($input);
 
