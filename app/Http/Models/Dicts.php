@@ -44,7 +44,7 @@ class Dicts extends BaseModel
      * @param string|null $code
      * @return \Illuminate\Support\Collection
      */
-    public static function getDicts(string $code = null)
+    public static function getDicts(string $code = null): array
     {
         self::initDicts();
 

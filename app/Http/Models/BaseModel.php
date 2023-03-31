@@ -21,18 +21,6 @@ class BaseModel extends Model
     }
 
     /**
-     * Получение необработанного результата выборки данных
-     *
-     * @param string $sql
-     * @param array $params
-     * @return array
-     */
-    protected function getRawData(string $sql, array $params = []): array
-    {
-        return DB::select($sql, $params);
-    }
-
-    /**
      * Преобразование массива stdClass объектов в массив
      * ассоциативных массивов или в один ассоциативный массив.
      *
@@ -73,32 +61,5 @@ class BaseModel extends Model
     protected function updateItem($sql): void
     {
 
-    }
-
-    protected static function prepare($rawData, bool $list = false): array
-    {
-        $result = [];
-
-        if (!empty($rawData)) {
-            foreach ($rawData as $item) {
-                $result[] = self::prepareItem($item);
-            }
-        }
-
-        if ($list) return $result;
-
-        if (count($result) == 0) return $result;
-
-        return $result[0];
-    }
-
-    protected static function prepareItem($item): array
-    {
-        $result = [];
-        foreach ($item as $key => $value) {
-            $result[$key] = $value;
-        }
-
-        return  $result;
     }
 }

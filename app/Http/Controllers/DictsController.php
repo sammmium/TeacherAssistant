@@ -28,6 +28,7 @@ class DictsController extends MainController
         $selectedId = $request['selected_dict'];
         $selected = Dicts::getById($selectedId);
         $input['selected'] = $selected;
+
         return view('dicts.add', $input);
     }
 

@@ -15,17 +15,27 @@
                 <div class="card-header">Справочник</div>
 
                 <div class="card-body">
-                    @foreach($items as $item)
+                    @if(!empty($items))
+                        @foreach($items as $item)
+                            <div class="card-row col-md-12">
+                                <div class="col-md-4 card-row-title"></div>
+                                <div class="col-md-7 card-row-value">
+                                    <a href="{{ route('dicts-select', $item['id']) }}">
+                                        <div class="btn btn-secondary col-md-5">{{ $item['value'] }}</div>
+                                    </a>
+                                </div>
+                                <div class="col-md-1 card-row-button"></div>
+                            </div>
+                        @endforeach
+                    @else
                         <div class="card-row col-md-12">
                             <div class="col-md-4 card-row-title"></div>
                             <div class="col-md-7 card-row-value">
-                                <a href="{{ route('dicts-select', $item['id']) }}">
-                                    <div class="btn btn-secondary col-md-5">{{ $item['value'] }}</div>
-                                </a>
+                                Справочники отсутствуют
                             </div>
                             <div class="col-md-1 card-row-button"></div>
                         </div>
-                    @endforeach
+                    @endif
                 </div>
             </div>
         </div>

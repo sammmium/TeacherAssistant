@@ -13,6 +13,8 @@ use App\Http\Models\Unit;
 use App\Http\Models\UnitsGroups;
 use App\Http\Models\UnitsGroupsPupils;
 use App\Http\Models\WorkStatus;
+use App\Http\Models\WS;
+use App\Http\Models\WSDB;
 use App\Http\Traits\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,14 +26,17 @@ class UnitsGroupsController extends MainController
         $year = date('Y');
         $teacher = Teacher::getTeacher();
         $unit = Unit::getUnit($teacher['id'], $year);
-        WorkStatus::set('unit', $unit['id']);
+        $ws = new WSDB();
+        $ws->set('unit_id', $unit['id']);
+        $ws->set('teacher_id', $teacher['id']);
+        $ws->set('educational_institution_id', $unit['educational_institution_id']);
+        $ws->save();
         $params = [
             'id' => $unit['educational_institution_id']
         ];
         $educationalInstitution = EducationalInstitution::getEducationalInstitution($params);
         $role = Dicts::getById($teacher['role_id']);
         $groupList = UnitsGroups::getGroupList($unit['id']);
-//        var_dump($role);exit;
         $input = [
             'teacher' => $teacher,
             'educational_institution' => $educationalInstitution,
@@ -40,8 +45,6 @@ class UnitsGroupsController extends MainController
             'group_list' => $groupList,
             'unit_id' => $unit['id']
         ];
-
-//        var_dump($input);exit;
 
         return view('home.group.list', $input);
     }
@@ -73,16 +76,16 @@ class UnitsGroupsController extends MainController
      */
     public function select(int $groupId)
     {
-        WorkStatus::set('group', $groupId);
-        $ws = WorkStatus::get(Auth::user()->id);
+        $ws = new WSDB();
+        $ws->set('group_id', $groupId);
         $ug = UnitsGroups::getUnitGroup([
-            'unit_id' => $ws['unit_id'],
+            'unit_id' => $ws->get('unit_id'),
             'group_id' => $groupId
         ]);
-        WorkStatus::set('unit_group_id', $ug['id']);
-        $route = WorkStatus::selectRoute();
+        $ws->set('unit_group_id', $ug['id']);
+        $ws->save();
 
-        return redirect($route);
+        return redirect($ws->selectRoute());
     }
 
     /**

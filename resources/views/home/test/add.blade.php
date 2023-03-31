@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('scripts')
-{{--        <script>--}}
     $(document).ready(function() {
         /* подсветка кнопки меню */
         $('a.button-home').parent().addClass('selected-button');
@@ -21,6 +20,7 @@
                             @csrf
 
                             <input type="hidden" name="unit_subject_id" value="{{ $unit_subject_id }}">
+                            <input type="hidden" name="unit_group_id" value="{{ $unit_group_id }}">
 
                             <div class="card-row col-md-12">
                                 <div class="col-md-3 card-row-title">Дата</div>
@@ -35,6 +35,19 @@
                                 <div class="col-md-3 card-row-title">Наименование</div>
                                 <div class="col-md-7 card-row-value">
                                     <input type="text" name="name" value="{{ old('name') }}" class="form-control">
+                                </div>
+                                <div class="col-md-1 card-row-button text-md-right"></div>
+                                <div class="col-md-1 card-row-button"></div>
+                            </div>
+
+                            <div class="card-row col-md-12">
+                                <div class="col-md-3 card-row-title">Тип работы</div>
+                                <div class="col-md-7 card-row-value">
+                                    <select name="type" class="form-control">
+                                        @foreach($test_types as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="col-md-1 card-row-button text-md-right"></div>
                                 <div class="col-md-1 card-row-button"></div>

@@ -11,12 +11,17 @@ use App\Http\Models\EducationalInstitution;
 use App\Http\Models\Group;
 use App\Http\Models\Members;
 use App\Http\Models\Teacher;
+use App\Http\Models\Tests\TestFactory;
 use App\Http\Models\Tests;
 use App\Http\Models\Unit;
 use App\Http\Models\UnitsGroups;
 use App\Http\Models\UnitsGroupsPupils;
 use App\Http\Models\UnitsSubjects;
 use App\Http\Models\WorkStatus;
+use App\Http\Models\WS;
+use App\Http\Models\WSC;
+use App\Http\Models\WSDB;
+use App\Http\Traits\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -24,6 +29,8 @@ use PhpOffice\PhpWord\TemplateProcessor;
 
 class HomeController extends MainController
 {
+    use Helper;
+
     /**
      * Create a new controller instance.
      *
@@ -55,47 +62,48 @@ class HomeController extends MainController
 
         // временно редиректим для теста
 //        $route = 'home-group-list';
-        WorkStatus::init();
-        $route = WorkStatus::selectRoute();
 
-//        var_dump($route);exit;
-
-        return redirect($route);
-    }
-
-    public function group_list()
-    {
-        parent::access();
-        $input = $this->test_data();
-        return view('home.group.list', $input);
-    }
-
-    public function group_list_return()
-    {
-        WorkStatus::clear('group');
-        WorkStatus::clear('unit_group_id');
-        WorkStatus::clear('subject');
-        WorkStatus::clear('unit_subject_id');
-        WorkStatus::clear('test');
-        WorkStatus::clear('card');
-        $route = WorkStatus::selectRoute();
+        $ws = new WSDB();
+//        $ws->cleanAll();
+//        $ws->save();
+//        var_dump($ws->all());exit;
+        $ws->set('teacher_id', $teacher['id']);
+        $ws->save();
+        $route = $ws->selectRoute();
 
         return redirect($route);
     }
+
+//    public function group_list()
+//    {
+//        parent::access();
+//        $input = $this->test_data();
+//        return view('home.group.list', $input);
+//    }
+
+//    public function group_list_return()
+//    {
+//        $ws = new WSDB();
+//        $ws->cleanAll();
+//        $ws->save();
+//
+//        return redirect($ws->selectRoute());
+//    }
 
     public function group_index(int $id)
     {
         parent::access();
 
-        WorkStatus::set('group', $id);
+        $ws = new WSDB();
+        $ws->set('group_id', $id);
+        $ws->save();
         $teacher = Teacher::getTeacher();
         $unit = Unit::getUnit($teacher['id'], date('Y'));
         $educational_institution = EducationalInstitution::getEducationalInstitution([
             'id' => $unit['educational_institution_id']
         ]);
         $role = Dicts::getById($teacher['role_id']);
-        $ws = WorkStatus::get($teacher['user_id']);
-        $group = Dicts::getById($ws['group_id']);
+        $group = Dicts::getById($ws->get('group_id'));
         $unitGroup = UnitsGroups::getUnitGroup([
             'unit_id' => $unit['id'],
             'group_id' => $group['id']
@@ -119,25 +127,26 @@ class HomeController extends MainController
     {
         parent::access();
 
-        WorkStatus::set('subject', $id);
+        $ws = new WSDB();
+        $ws->set('subject_id', $id);
         $teacher = Teacher::getTeacher();
         $unit = Unit::getUnit($teacher['id'], date('Y'));
         $educational_institution = EducationalInstitution::getEducationalInstitution([
             'id' => $unit['educational_institution_id']
         ]);
         $role = Dicts::getById($teacher['role_id']);
-        $ws = WorkStatus::get($teacher['user_id']);
-        $group = Dicts::getById($ws['group_id']);
+        $group = Dicts::getById($ws->get('group_id'));
         $subject = Dicts::getById($id);
         $unitGroup = UnitsGroups::getUnitGroup([
             'group_id' => $group['id'],
-            'unit_id' => $ws['unit_id']
+            'unit_id' => $ws->get('unit_id')
         ]);
         $unitSubject = UnitsSubjects::getUnitSubject([
             'subject_id' => $subject['id'],
             'unit_group_id' => $unitGroup['id']
         ]);
-        WorkStatus::set('unit_subject_id', $unitSubject['id']);
+        $ws->set('unit_subject_id', $unitSubject['id']);
+        $ws->save();
         $testList = Tests::getTestList($unitSubject['id']);
         $input = [
             'educational_institution' => $educational_institution,
@@ -154,15 +163,18 @@ class HomeController extends MainController
 
     public function subject_list()
     {
-//        var_dump('subject_list');exit;
         parent::access();
-        WorkStatus::clear('subject');
-        WorkStatus::clear('unit_subject_id');
-        WorkStatus::clear('test');
-        WorkStatus::clear('card');
-        $route = WorkStatus::selectRoute();
 
-        return redirect($route);
+        $ws = new WSDB();
+        $ws->cleanBunch([
+            'subject_id',
+            'unit_subject_id',
+            'test_id',
+            'card_id'
+        ]);
+        $ws->save();
+
+        return redirect($ws->selectRoute());
     }
 
     public function test_index(int $id)
@@ -175,31 +187,36 @@ class HomeController extends MainController
             'id' => $unit['educational_institution_id']
         ]);
         $role = Dicts::getById($teacher['role_id']);
-        $ws = WorkStatus::get($teacher['user_id']);
-        $group = Dicts::getById($ws['group_id']);
-        $subject = Dicts::getById($ws['subject_id']);
+        $ws = new WSDB();
+        $group = Dicts::getById($ws->get('group_id'));
+        $subject = Dicts::getById($ws->get('subject_id'));
         $unitGroup = UnitsGroups::getUnitGroup([
             'group_id' => $group['id'],
-            'unit_id' => $ws['unit_id']
+            'unit_id' => $ws->get('unit_id')
         ]);
         $unitSubject = UnitsSubjects::getUnitSubject([
-            'subject_id' => $ws['subject_id'],
+            'subject_id' => $ws->get('subject_id'),
             'unit_group_id' => $unitGroup['id']
         ]);
         $test = Tests::getTest([
-            'unit_subject_id' => $unitSubject['id']
+            'id' => $ws->get('test_id')
         ]);
 
         $pupilList = UnitsGroupsPupils::getPupilList([
             'unit_group_id' => $unitGroup['id']
         ]);
 
-        $memberList = Members::getMembers($pupilList, $test['id']);
+        $memberList = Members::getMembers($pupilList, $ws->get('test_id'));
 
         $memberIdList = [];
         foreach ($memberList as $item) {
             $memberIdList[] = $item['member']['pupil_id'];
         }
+        $sub = Dicts::getById($ws->get('subject_id'));
+        $gr = Dicts::getById($group['id']);
+        $group_num = self::cutGroupNumber($gr['code']);
+
+        $testType = new TestFactory($sub['code'], $group_num, $test['type']);
 
         $input = [
             'educational_institution' => $educational_institution,
@@ -209,10 +226,14 @@ class HomeController extends MainController
             'group' => $group,
             'subject' => $subject,
             'test' => $test,
+            'test_type' => $testType->getTypeName(),
             'member_list' => $memberList,
             'member_id_list' => implode('|', $memberIdList)
         ];
-//        var_dump($memberList);exit;
+//        var_dump($input);exit;
+
+//        $w = WS::init();
+//        var_dump('stop');exit;
 
         return view('home.pupil.list', $input);
     }
@@ -220,31 +241,36 @@ class HomeController extends MainController
     public function test_list()
     {
         parent::access();
-        WorkStatus::clear('test');
-        WorkStatus::clear('card');
-        $route = WorkStatus::selectRoute();
 
-        return redirect($route);
+        $ws = new WSDB();
+        $ws->cleanBunch([
+            'test_id',
+            'card_id'
+        ]);
+        $ws->save();
+
+        return redirect($ws->selectRoute());
     }
 
-    public function card_index(int $id)
-    {
-        parent::access();
-        // todo выбрать необходимые данные по $id
-        WorkStatus::set('card', $id);
-        $input = $this->test_data();
+//    public function card_index(int $id)
+//    {
+//        parent::access();
+//        // todo выбрать необходимые данные по $id
+//        $ws = new WSDB();
+//        $ws->set('card', $id);
+//        $input = $this->test_data();
+//
+//        return view('home.card.index', $input);
+//    }
 
-        return view('home.card.index', $input);
-    }
-
-    public function card_list()
-    {
-        parent::access();
-        WorkStatus::clear('card');
-        $route = WorkStatus::selectRoute();
-
-        return redirect($route);
-    }
+//    public function card_list()
+//    {
+//        parent::access();
+//        WorkStatus::clear('card');
+//        $route = WorkStatus::selectRoute();
+//
+//        return redirect($route);
+//    }
 
 //    private function test_data(): array
 //    {
@@ -840,13 +866,13 @@ class HomeController extends MainController
 //        return $total;
 //    }
 
-    public function group_list_add()
-    {
-        parent::access();
-        $input = $this->test_data();
-//        var_dump(count($input));exit;
-        return view('home.group.add', $input);
-    }
+//    public function group_list_add()
+//    {
+//        parent::access();
+//        $input = $this->test_data();
+////        var_dump(count($input));exit;
+//        return view('home.group.add', $input);
+//    }
 
     public function add_member(Request $request)
     {
@@ -855,17 +881,17 @@ class HomeController extends MainController
             'unit_group_pupil_id' => (int)$request['unit_group_pupil_id']
         ];
         Cards::create($input);
-        $route = WorkStatus::selectRoute();
+        $ws = new WSDB();
 
-        return redirect($route);
+        return redirect($ws->selectRoute());
     }
 
     public function reset_member(Request $request)
     {
         Cards::where(['id' => $request['card_id']])->delete();
         CardValues::where(['card_id' => $request['card_id']])->delete();
-        $route = WorkStatus::selectRoute();
+        $ws = new WSDB();
 
-        return redirect($route);
+        return redirect($ws->selectRoute());
     }
 }

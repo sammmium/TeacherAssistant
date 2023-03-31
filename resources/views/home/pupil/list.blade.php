@@ -101,6 +101,17 @@
                             </div>
                             <div class="col-md-1 card-row-button"></div>
                         </div>
+
+                        <div class="card-row col-md-12">
+                            <div class="col-md-3 card-row-title">
+                                Тип контрольной работы
+                            </div>
+                            <div class="col-md-7 card-row-value">
+                                {{ $test_type }}
+                            </div>
+                            <div class="col-md-1 card-row-button"></div>
+                            <div class="col-md-1 card-row-button"></div>
+                        </div>
                     </div>
                 </div>
 

@@ -12,6 +12,8 @@ class Tests extends BaseModel
         'name',
         'date',
         'unit_subject_id',
+        'unit_group_id',
+        'type',
     ];
 
     public $timestamps = false;

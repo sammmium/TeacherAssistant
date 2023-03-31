@@ -3,6 +3,8 @@
 namespace App\Http\Models;
 
 use App\Http\Interfaces\AnalyzerInterface;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class Analyzer extends BaseModel implements AnalyzerInterface
 {
@@ -13,30 +15,35 @@ class Analyzer extends BaseModel implements AnalyzerInterface
         return [];
     }
 
-    protected function prepareRanges(): void
+    protected function prepareMainData(): void
     {
-        $this->analyzer['cm_10'] = Cards::countMembersWithRange($this->analyzer['test_id'], 10);
-        $this->analyzer['pm_10'] = $this->getPercent($this->analyzer['cm_10']);
-        $this->analyzer['cm_9'] = Cards::countMembersWithRange($this->analyzer['test_id'], 9);
-        $this->analyzer['pm_9'] = $this->getPercent($this->analyzer['cm_9']);
-        $this->analyzer['cm_8'] = Cards::countMembersWithRange($this->analyzer['test_id'], 8);
-        $this->analyzer['pm_8'] = $this->getPercent($this->analyzer['cm_8']);
-        $this->analyzer['cm_7'] = Cards::countMembersWithRange($this->analyzer['test_id'], 7);
-        $this->analyzer['pm_7'] = $this->getPercent($this->analyzer['cm_7']);
-        $this->analyzer['cm_6'] = Cards::countMembersWithRange($this->analyzer['test_id'], 6);
-        $this->analyzer['pm_6'] = $this->getPercent($this->analyzer['cm_6']);
-        $this->analyzer['cm_5'] = Cards::countMembersWithRange($this->analyzer['test_id'], 5);
-        $this->analyzer['pm_5'] = $this->getPercent($this->analyzer['cm_5']);
-        $this->analyzer['cm_4'] = Cards::countMembersWithRange($this->analyzer['test_id'], 4);
-        $this->analyzer['pm_4'] = $this->getPercent($this->analyzer['cm_4']);
-        $this->analyzer['cm_3'] = Cards::countMembersWithRange($this->analyzer['test_id'], 3);
-        $this->analyzer['pm_3'] = $this->getPercent($this->analyzer['cm_3']);
-        $this->analyzer['cm_2'] = Cards::countMembersWithRange($this->analyzer['test_id'], 2);
-        $this->analyzer['pm_2'] = $this->getPercent($this->analyzer['cm_2']);
-        $this->analyzer['cm_1'] = Cards::countMembersWithRange($this->analyzer['test_id'], 1);
-        $this->analyzer['pm_1'] = $this->getPercent($this->analyzer['cm_1']);
+        $subject = Dicts::getById($this->analyzer['subject_id']);
+        $sub = $subject['code'];
+        $group = Dicts::getById($this->analyzer['group_id']);
+        $test = Tests::getTest(['id' => $this->analyzer['test_id']]);
+        $ws = WorkStatus::get(Auth::user()->id);
+        $this->analyzer['unit_group_id'] = $ws['unit_group_id'];
+        $unitTeacher = Unit::getTeacherId($ws);
+        $this->analyzer['teacher'] = Teacher::getTeacherFio(['id' => $unitTeacher['teacher_id']]);
+        $this->analyzer['group'] = $group['value'];
+        $this->analyzer['theme'] = $test['name'];
+        $this->analyzer['date'] = self::transformDate($test['date'], 'ru');
+        list($prefix, $number, $letter) = explode('_', $group['code']);
+        $this->analyzer['template_file_name'] = $sub . '_' . $number . '.docx';
+    }
 
-        $this->prepareAverageRanges();
+    protected function prepareCountPupils(): void
+    {
+        $this->analyzer['count_pupils'] = UnitsGroupsPupils::getCountPupils(
+            $this->analyzer['unit_group_id']
+        );
+    }
+
+    protected function prepareCountMembers(): void
+    {
+        $this->analyzer['count_members'] = Cards::getCountMembers(
+            $this->analyzer['test_id']
+        );
     }
 
     protected function getPercent(int $part = 0)
@@ -49,35 +56,6 @@ class Analyzer extends BaseModel implements AnalyzerInterface
         }
 
         return 0;
-    }
-
-    protected function prepareAverageRanges(): void
-    {
-        $total = 0;
-        foreach ($this->analyzer as $key => $value) {
-            if (strpos($key, 'cm_') !== false) {
-                switch ($key) {
-                    case 'cm_10': $total = $this->getAVG($total, 10, $value); break;
-                    case 'cm_9': $total = $this->getAVG($total, 9, $value); break;
-                    case 'cm_8': $total = $this->getAVG($total, 8, $value); break;
-                    case 'cm_7': $total = $this->getAVG($total, 7, $value); break;
-                    case 'cm_6': $total = $this->getAVG($total, 6, $value); break;
-                    case 'cm_5': $total = $this->getAVG($total, 5, $value); break;
-                    case 'cm_4': $total = $this->getAVG($total, 4, $value); break;
-                    case 'cm_3': $total = $this->getAVG($total, 3, $value); break;
-                    case 'cm_2': $total = $this->getAVG($total, 2, $value); break;
-                    case 'cm_1': $total = $this->getAVG($total, 1, $value); break;
-                }
-            }
-        }
-
-        $this->analyzer['average_range'] = 0; // значение по-умолчанию
-
-        if ($total > 0) {
-            if ($this->analyzer['count_members'] > 0) {
-                $this->analyzer['average_range'] = ceil($total / $this->analyzer['count_members']);
-            }
-        }
     }
 
     protected function getAVG(int $total, int $range, int $value = 0)
