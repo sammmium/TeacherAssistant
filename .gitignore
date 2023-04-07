@@ -12,3 +12,7 @@ npm-debug.log
 yarn-error.log
 .idea/
 public/fontawesome/
+public/js/
+public/css/
+public/bootstrap/
+
