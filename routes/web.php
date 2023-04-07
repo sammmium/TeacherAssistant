@@ -103,6 +103,7 @@ Route::get('/home/test/{id}', 'HomeController@test_index')->name('home-test-inde
 
 
 Route::post('/home/test/list', 'HomeController@test_list')->name('home-test-list');
+Route::post('/home/test/form/store', 'TestsController@form_store')->name('test-form-store');
 
 // переход к форме наполнения списка учеников для выбранного класса
 Route::get('/home/group/{id}/fill', 'UnitsGroupsController@group_fill')->name('group-pupil-add');

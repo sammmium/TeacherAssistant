@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Dicts;
+use App\Http\Models\Forms\FormManager;
+use App\Http\Models\Slots\SlotsFactory;
 use App\Http\Models\Teacher;
 use App\Http\Models\Tests\TestFactory;
 use App\Http\Models\Tests;
@@ -15,6 +17,7 @@ use App\Http\Traits\Helper;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\TemplateProcessor;
 use App\Http\Models\MathAnalyzer;
+use App\Http\Models\Tests\TestFormStoreHelper;
 
 class TestsController extends MainController
 {
@@ -22,20 +25,24 @@ class TestsController extends MainController
 
     public function add()
     {
-        $year = date('Y');
-        $teacher = Teacher::getTeacher();
-        $unit = Unit::getUnit($teacher['id'], $year);
+
+//        $slotFactory = new SlotsFactory();
+//        $slotFactory->build([
+//            'sub' => 'math',
+//            'type' => 'kr',
+//            'group' => 1,
+//            'name' => 'task1_we_apmb'
+//        ]);
+////        var_dump($slotFactory->getSlots());
+//        var_dump($slotFactory->getSlot());
+
+
+
+
         $ws = new WSDB();
         $groupId = $ws->get('group_id');
         $subjectId = $ws->get('subject_id');
-        $unitGroup = UnitsGroups::getUnitGroup([
-            'unit_id' => $unit['id'],
-            'group_id' => $groupId
-        ]);
-        $unitSubject = UnitsSubjects::getUnitSubject([
-            'unit_group_id' => $unitGroup['id'],
-            'subject_id' => $subjectId
-        ]);
+
         $subject = Dicts::getById($subjectId);
         $group = Dicts::getById($groupId);
         $group_num = self::cutGroupNumber($group['code']);
@@ -43,8 +50,6 @@ class TestsController extends MainController
         $testFactory = new TestFactory($subject['code'], $group_num);
 
         $input = [
-            'unit_subject_id' => $unitSubject['id'],
-            'unit_group_id' => $unitGroup['id'],
             'test_types' => $testFactory->getTypeList()
         ];
 
@@ -54,26 +59,56 @@ class TestsController extends MainController
     public function create(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string',
             'type' => 'required|string',
-            'date' => 'required|date',
-            'unit_subject_id' => 'required|numeric',
-            'unit_group_id' => 'required|numeric',
         ]);
 
-        $input = [
-            'name' => $request['name'],
-            'date' => self::transformDate($request['date'], 'en'),
-            'unit_subject_id' => (int)$request['unit_subject_id'],
-            'unit_group_id' => (int)$request['unit_group_id'],
-            'type' => $request['type'],
-        ];
+        $input = self::transformTestType($request['type']);
 
-        if (!Tests::has($input)) {
-            Tests::create($input);
-        }
+        $ws = new WSDB();
+        $groupId = $ws->get('group_id');
+        $group = Dicts::getById($groupId);
+        $input['group'] = self::cutGroupNumber($group['code']);
 
-        return redirect()->route('home');
+//        var_dump($input);exit;
+
+        $manager = new FormManager($input);
+        $formItems = $manager->getFormItems();
+
+        $view = $formItems['view'];
+        unset($formItems['view']);
+
+        $formItems['sub'] = $input['sub'];
+        $formItems['group'] = $input['group'];
+        $formItems['type'] = $input['type'];
+
+//        var_dump($formItems);exit;
+
+        return view('home.test.' . $view, $formItems);
+    }
+
+    public function form_store(Request $request)
+    {
+        $input = $request->all();
+
+//        var_dump($input);exit;
+        $helper = new TestFormStoreHelper($input);
+        $cleared = $helper->handler();
+
+        var_dump($cleared);exit;
+
+
+
+
+
+
+
+
+
+
+
+
+
+        var_dump($request->all());exit;
     }
 
     public function select(int $id)

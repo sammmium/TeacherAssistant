@@ -86,4 +86,16 @@ trait Helper
     {
         return DB::select($sql, $params);
     }
+
+    protected static function transformTestType(string $testType): array
+    {
+        list($sub, $type) = explode('_', $testType);
+
+        return compact('sub', 'type');
+    }
+
+    protected static function gatherTestType(string $sub, string $type): string
+    {
+        return $sub . '_' . $type;
+    }
 }

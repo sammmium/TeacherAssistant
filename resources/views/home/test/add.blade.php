@@ -19,27 +19,6 @@
                         <form method="POST" name="subject" action="{{ route('home-test-create') }}">
                             @csrf
 
-                            <input type="hidden" name="unit_subject_id" value="{{ $unit_subject_id }}">
-                            <input type="hidden" name="unit_group_id" value="{{ $unit_group_id }}">
-
-                            <div class="card-row col-md-12">
-                                <div class="col-md-3 card-row-title">Дата</div>
-                                <div class="col-md-7 card-row-value">
-                                    <input type="text" name="date" value="{{ old('date') }}" class="form-control" data-mask="date">
-                                </div>
-                                <div class="col-md-1 card-row-button text-md-right"></div>
-                                <div class="col-md-1 card-row-button"></div>
-                            </div>
-
-                            <div class="card-row col-md-12">
-                                <div class="col-md-3 card-row-title">Наименование</div>
-                                <div class="col-md-7 card-row-value">
-                                    <input type="text" name="name" value="{{ old('name') }}" class="form-control">
-                                </div>
-                                <div class="col-md-1 card-row-button text-md-right"></div>
-                                <div class="col-md-1 card-row-button"></div>
-                            </div>
-
                             <div class="card-row col-md-12">
                                 <div class="col-md-3 card-row-title">Тип работы</div>
                                 <div class="col-md-7 card-row-value">
@@ -49,18 +28,10 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-1 card-row-button text-md-right"></div>
-                                <div class="col-md-1 card-row-button"></div>
-                            </div>
-
-                            <div class="card-row col-md-12">
-                                <div class="col-md-3 card-row-title"></div>
-                                <div class="col-md-7 card-row-value"></div>
                                 <div class="col-md-1 card-row-button text-md-right">
-                                    <button type="submit" class="btn btn-success" title="Сохранить">
-                                        <i class="fa fa-solid fa-save"></i>
-                                    </button>
-                                </div>
+                                    <button type="submit" class="btn btn-success" title="Далее">
+                                        <i class="fa fa-solid fa-arrow-down"></i>
+                                    </button></div>
                                 <div class="col-md-1 card-row-button"></div>
                             </div>
 

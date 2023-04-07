@@ -81,14 +81,14 @@ class HomeController extends MainController
 //        return view('home.group.list', $input);
 //    }
 
-//    public function group_list_return()
-//    {
-//        $ws = new WSDB();
-//        $ws->cleanAll();
-//        $ws->save();
-//
-//        return redirect($ws->selectRoute());
-//    }
+    public function group_list_return()
+    {
+        $ws = new WSDB();
+        $ws->cleanAll();
+        $ws->save();
+
+        return redirect($ws->selectRoute());
+    }
 
     public function group_index(int $id)
     {
