@@ -27,7 +27,6 @@ class MathSlots implements SlotInterface
 
     public function getSlots(): array
     {
-//        var_dump($this->slots[$this->prefix][$this->group][$this->type]);exit;
         $result = [];
         foreach ($this->slots[$this->prefix][$this->group][$this->type] as $name => $item) {
             $slot = new Slot([
@@ -51,7 +50,7 @@ class MathSlots implements SlotInterface
             'prefix' => $this->prefix,
             'group' => $this->group,
             'type' => $this->type,
-            'name' => 'task1_woe',
+            'name' => $this->name,
             'value' => $item,
         ]);
 

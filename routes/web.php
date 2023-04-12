@@ -91,6 +91,9 @@ Route::get('/home/subject/{id}', 'HomeController@subject_index')->name('home-sub
 
 // Переход к форме добавления КР в список выбранных КР
 Route::get('/home/test/add', 'TestsController@add')->name('home-test-add');
+Route::post('/home/test/add/theme', 'TestsController@add_theme')->name('home-test-add-theme');
+
+Route::post('/home/test/show/selected/form', 'TestsController@show_selected_form')->name('home-test-show-selected-form');
 
 // Сохранение новой контрольной работы
 // с последующим перенаправлением на home

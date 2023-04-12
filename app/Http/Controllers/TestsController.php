@@ -18,6 +18,11 @@ use Illuminate\Http\Request;
 use PhpOffice\PhpWord\TemplateProcessor;
 use App\Http\Models\MathAnalyzer;
 use App\Http\Models\Tests\TestFormStoreHelper;
+use Exception;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
+
+use function Ramsey\Uuid\v1;
 
 class TestsController extends MainController
 {
@@ -25,20 +30,6 @@ class TestsController extends MainController
 
     public function add()
     {
-
-//        $slotFactory = new SlotsFactory();
-//        $slotFactory->build([
-//            'sub' => 'math',
-//            'type' => 'kr',
-//            'group' => 1,
-//            'name' => 'task1_we_apmb'
-//        ]);
-////        var_dump($slotFactory->getSlots());
-//        var_dump($slotFactory->getSlot());
-
-
-
-
         $ws = new WSDB();
         $groupId = $ws->get('group_id');
         $subjectId = $ws->get('subject_id');
@@ -50,10 +41,100 @@ class TestsController extends MainController
         $testFactory = new TestFactory($subject['code'], $group_num);
 
         $input = [
-            'test_types' => $testFactory->getTypeList()
+            'test_types' => $testFactory->getTypeList(),
         ];
 
         return view('home.test.add', $input);
+    }
+
+    public function add_theme(Request $request)
+    {
+        $this->validate($request, [
+            'type' => 'required|string',
+        ]);
+        $ws = new WSDB();
+        $unitSubjectId = $ws->get('unit_subject_id');
+        $unitGroupId = $ws->get('unit_group_id');
+        $testType = $request['type'];
+        Redis::set('type', $testType);
+
+        $options = Tests::getThemeOptions([
+            'unit_subject_id' => $unitSubjectId,
+            'unit_group_id' => $unitGroupId,
+            'type' => $testType
+        ]);
+
+        $input = [
+            'test_themes' => $options
+        ];
+
+        return view('home.test.add_theme', $input);
+    }
+
+    public function show_selected_form(Request $request)
+    {
+
+        $this->validate($request, [
+            'theme_id' => 'required|numeric',
+            'new_theme' => 'sometimes',
+            'date' => 'sometimes',
+        ]);
+        // var_dump('WTF');exit;
+
+        $testId = null;
+        $ws = new WSDB();
+        $unitSubjectId = $ws->get('unit_subject_id');
+        $unitGroupId = $ws->get('unit_group_id');
+        $type = Redis::get('type');
+        $input = $request->all();
+        $date = !empty($input['date']) ? self::transformDate($input['date'], 'en') : date('Y-m-d');
+
+        // var_dump(compact('themeId', 'unitSubjectId', 'unitGroupId', 'type', 'date'));exit;
+
+        try {
+            if ($input['theme_id'] == 0) {
+                // var_dump('var 1');exit;
+                if (!empty($input['new_theme'])) {
+                    $options = [
+                        'name' => $input['new_theme'],
+                        'date' => $date,
+                        'unit_subject_id' => $unitSubjectId,
+                        'unit_group_id' => $unitGroupId,
+                        'type' => $type,
+                    ];
+                    Tests::create($options);
+                    $testId = Tests::getLastInsertId($options);
+                } else {
+                    throw new Exception('Не выбрано ни одного значения и не заполнено ни одного поля!');
+                }
+            } else {
+                $testId = $input['theme_id'];
+            }
+        } catch(Exception $ex) {
+            Log::error('[' . __METHOD__ . '] ' . $ex->getMessage());
+        }
+
+        // достаем слоты по параметрам
+        // передаем их в форму
+
+        $transformedTestType = self::transformTestType($type);
+        $group = Dicts::getById($ws->get('group_id'));
+        $group_num = self::cutGroupNumber($group['code']);
+
+        $slotData = [
+            'sub' => $transformedTestType['sub'],
+            'type' => $transformedTestType['type'],
+            'group' => $group_num,
+            // 'name' => 'task1_we_apmb'
+        ];
+
+        // var_dump(compact('slotData'));exit;
+        $slotFactory = new SlotsFactory($slotData);
+        var_dump($slotFactory->getSlots());
+        // var_dump($slotFactory->getSlot());
+
+
+        var_dump(compact('testId', 'unitSubjectId', 'unitGroupId', 'type', 'date'));exit;
     }
 
     public function create(Request $request)

@@ -46,4 +46,29 @@ class Tests extends BaseModel
             ->where($params)
             ->count('id');
     }
+
+    public static function getThemeOptions(array $params): array
+    {
+        $result = self::prepare(DB::table('tests')
+            ->select('*')
+            ->where($params)
+            ->orderBy('name')
+            ->get(),
+            true
+        );
+
+        $options = [
+            0 => 'Выберите тему'
+        ];
+        foreach ($result as $item) {
+            $options[$item['id']] = $item['name'];
+        }
+
+        return $options;
+    }
+
+    public static function getLastInsertId(array $options)
+    {
+        return self::lastInsertId('tests', $options);
+    }
 }

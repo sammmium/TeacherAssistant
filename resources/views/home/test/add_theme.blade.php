@@ -16,14 +16,14 @@
 
                     <div class="card-body">
 
-                        <form method="POST" name="subject" action="{{ route('home-test-add-theme') }}">
+                        <form method="POST" name="subject" action="{{ route('home-test-show-selected-form') }}">
                             @csrf
 
                             <div class="card-row col-md-12">
-                                <div class="col-md-3 card-row-title">Тип работы</div>
+                                <div class="col-md-3 card-row-title">Тема работы</div>
                                 <div class="col-md-7 card-row-value">
-                                    <select name="type" class="form-control">
-                                        @foreach($test_types as $key => $value)
+                                    <select name="theme_id" class="form-control">
+                                        @foreach($test_themes as $key => $value)
                                             <option value="{{ $key }}">{{ $value }}</option>
                                         @endforeach
                                     </select>
@@ -31,7 +31,25 @@
                                 <div class="col-md-1 card-row-button text-md-right"></div>
                                 <div class="col-md-1 card-row-button"></div>
                             </div>
-                            
+
+                            <div class="card-row col-md-12">
+                                <div class="col-md-3 card-row-title">Тема работы (новая)</div>
+                                <div class="col-md-7 card-row-value">
+                                    <input type="text" name="new_theme" class="form-control" value="">
+                                </div>
+                                <div class="col-md-1 card-row-button text-md-right"></div>
+                                <div class="col-md-1 card-row-button"></div>
+                            </div>
+
+                            <div class="card-row col-md-12">
+                                <div class="col-md-3 card-row-title">Дата работы</div>
+                                <div class="col-md-7 card-row-value">
+                                    <input type="text" name="date" class="form-control" value="">
+                                </div>
+                                <div class="col-md-1 card-row-button text-md-right"></div>
+                                <div class="col-md-1 card-row-button"></div>
+                            </div>
+
                             <hr>
 
                             <div class="card-row col-md-12">
