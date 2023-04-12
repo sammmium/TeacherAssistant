@@ -121,17 +121,35 @@ class TestsController extends MainController
         $group = Dicts::getById($ws->get('group_id'));
         $group_num = self::cutGroupNumber($group['code']);
 
-        $slotData = [
+        // $slotData = [
+            // 'sub' => $transformedTestType['sub'],
+            // 'type' => $transformedTestType['type'],
+        //     'group' => $group_num,
+        //     // 'name' => 'task1_we_apmb'
+        // ];
+
+        // // var_dump(compact('slotData'));exit;
+        // $slotFactory = new SlotsFactory($slotData);
+        // var_dump($slotFactory->getSlots());
+        // // var_dump($slotFactory->getSlot());
+
+        $formManagerOptions = [
+            'group' => $group_num,
             'sub' => $transformedTestType['sub'],
             'type' => $transformedTestType['type'],
-            'group' => $group_num,
-            // 'name' => 'task1_we_apmb'
         ];
+        // var_dump($formManagerOptions);exit;
+        $manager = new FormManager($formManagerOptions);
+        $formItems = $manager->getFormItems();
 
-        // var_dump(compact('slotData'));exit;
-        $slotFactory = new SlotsFactory($slotData);
-        var_dump($slotFactory->getSlots());
-        // var_dump($slotFactory->getSlot());
+        dd($formItems);exit;
+
+        $view = $formItems['view'];
+        unset($formItems['view']);
+
+        $formItems['sub'] = $formManagerOptions['sub'];
+        $formItems['group'] = $formManagerOptions['group'];
+        $formItems['type'] = $formManagerOptions['type'];
 
 
         var_dump(compact('testId', 'unitSubjectId', 'unitGroupId', 'type', 'date'));exit;
@@ -176,6 +194,8 @@ class TestsController extends MainController
         $cleared = $helper->handler();
 
         var_dump($cleared);exit;
+
+        // сохранить в БД выбранные элементы (слоты)
 
 
 

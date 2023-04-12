@@ -15,6 +15,8 @@ class FormManager implements FormManagerInterface
 
     private $slots;
 
+    private $enabledSlots;
+
     public function __construct(array $options)
     {
         $rules = [
@@ -35,6 +37,8 @@ class FormManager implements FormManagerInterface
     public function getFormItems(): array
     {
         if ($this->hasForm()) {
+
+
             return $this->showForm();
         }
 
@@ -45,6 +49,12 @@ class FormManager implements FormManagerInterface
     {
         // TODO сделать обращение к БД
         return false;
+    }
+    
+    private function selectEnabledSlots()
+    {
+        // достаем из БД сохраненные слоты: sub, group, type, name
+        // прогоняем в цикле и формируем из них массив слотов, выбранных при создании формы
     }
 
     private function selectSlotsData(array $result): array
