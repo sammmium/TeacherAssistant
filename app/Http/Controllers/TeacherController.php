@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Models\BaseModel;
 use App\Http\Models\Dicts;
 use App\Http\Models\Teacher;
+use App\Http\Traits\Helper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +21,7 @@ class TeacherController extends MainController
 
         if (count($teacher)) {
             $input['teacher'] = $teacher;
-            $input['teacher']['birthdate'] = $this->transformDate($input['teacher']['birthdate'], 'ru');
+            $input['teacher']['birthdate'] = BaseModel::transformDate($input['teacher']['birthdate'], 'ru');
             $input['role'] = Dicts::getById($teacher['role_id']);
 
             return view('teacher.index', $input);
@@ -61,7 +63,7 @@ class TeacherController extends MainController
             'lastname' => $request['lastname'],
             'firstname' => $request['firstname'],
             'patronymic' => $request['patronymic'],
-            'birthdate' => $this->transformDate($request['birthdate'], 'en'),
+            'birthdate' => BaseModel::transformDate($request['birthdate'], 'en'),
             'user_id' => Auth::user()->id,
             'role_id' => (int)$request['role_id']
         ];
@@ -81,7 +83,7 @@ class TeacherController extends MainController
         $teacher = $instance->getTeacher(Auth::user()->id);
 
         $input['teacher'] = $teacher;
-        $input['teacher']['birthdate'] = $this->transformDate($input['teacher']['birthdate'], 'ru');
+        $input['teacher']['birthdate'] = BaseModel::transformDate($input['teacher']['birthdate'], 'ru');
 
         $dicts = Dicts::getOptions('roles');
         $input['roles'] = $dicts;
@@ -100,7 +102,7 @@ class TeacherController extends MainController
                 'lastname' => $request['lastname'],
                 'firstname' => $request['firstname'],
                 'patronymic' => $request['patronymic'],
-                'birthdate' => $this->transformDate($request['birthdate'], 'en'),
+                'birthdate' => BaseModel::transformDate($request['birthdate'], 'en'),
                 'role_id' => (int)$request['role_id']
             ]);
 

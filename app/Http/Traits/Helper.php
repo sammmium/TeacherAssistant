@@ -58,9 +58,13 @@ trait Helper
             }
         }
 
-        if ($list) return $result;
+        if ($list) {
+            return $result;
+        }
 
-        if (count($result) == 0) return $result;
+        if (count($result) == 0) {
+            return $result;
+        }
 
         return $result[0];
     }
@@ -72,7 +76,7 @@ trait Helper
             $result[$key] = $value;
         }
 
-        return  $result;
+        return $result;
     }
 
     /**

@@ -21,6 +21,7 @@ use App\Http\Models\Tests\TestFormStoreHelper;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
+//use Illuminate\Support\Facades\Request;
 
 use function Ramsey\Uuid\v1;
 
@@ -57,12 +58,15 @@ class TestsController extends MainController
         $unitGroupId = $ws->get('unit_group_id');
         $testType = $request['type'];
         Redis::set('type', $testType);
+        Redis::set('unit_subject_id', $unitSubjectId);
+        Redis::set('unit_group_id', $unitGroupId);
 
         $options = Tests::getThemeOptions([
             'unit_subject_id' => $unitSubjectId,
             'unit_group_id' => $unitGroupId,
             'type' => $testType
         ]);
+
 
         $input = [
             'test_themes' => $options
@@ -73,13 +77,11 @@ class TestsController extends MainController
 
     public function show_selected_form(Request $request)
     {
-
         $this->validate($request, [
             'theme_id' => 'required|numeric',
             'new_theme' => 'sometimes',
             'date' => 'sometimes',
         ]);
-        // var_dump('WTF');exit;
 
         $testId = null;
         $ws = new WSDB();
@@ -88,8 +90,6 @@ class TestsController extends MainController
         $type = Redis::get('type');
         $input = $request->all();
         $date = !empty($input['date']) ? self::transformDate($input['date'], 'en') : date('Y-m-d');
-
-        // var_dump(compact('themeId', 'unitSubjectId', 'unitGroupId', 'type', 'date'));exit;
 
         try {
             if ($input['theme_id'] == 0) {
@@ -121,28 +121,13 @@ class TestsController extends MainController
         $group = Dicts::getById($ws->get('group_id'));
         $group_num = self::cutGroupNumber($group['code']);
 
-        // $slotData = [
-            // 'sub' => $transformedTestType['sub'],
-            // 'type' => $transformedTestType['type'],
-        //     'group' => $group_num,
-        //     // 'name' => 'task1_we_apmb'
-        // ];
-
-        // // var_dump(compact('slotData'));exit;
-        // $slotFactory = new SlotsFactory($slotData);
-        // var_dump($slotFactory->getSlots());
-        // // var_dump($slotFactory->getSlot());
-
         $formManagerOptions = [
             'group' => $group_num,
             'sub' => $transformedTestType['sub'],
             'type' => $transformedTestType['type'],
         ];
-        // var_dump($formManagerOptions);exit;
         $manager = new FormManager($formManagerOptions);
         $formItems = $manager->getFormItems();
-
-        dd($formItems);exit;
 
         $view = $formItems['view'];
         unset($formItems['view']);
@@ -151,8 +136,7 @@ class TestsController extends MainController
         $formItems['group'] = $formManagerOptions['group'];
         $formItems['type'] = $formManagerOptions['type'];
 
-
-        var_dump(compact('testId', 'unitSubjectId', 'unitGroupId', 'type', 'date'));exit;
+        return view('home.test.' . $view, $formItems);
     }
 
     public function create(Request $request)
@@ -162,6 +146,8 @@ class TestsController extends MainController
         ]);
 
         $input = self::transformTestType($request['type']);
+
+        dd('create', $input);
 
         $ws = new WSDB();
         $groupId = $ws->get('group_id');
@@ -192,20 +178,11 @@ class TestsController extends MainController
 //        var_dump($input);exit;
         $helper = new TestFormStoreHelper($input);
         $cleared = $helper->handler();
+        dd('cleared', $cleared, $request->all());
 
-        var_dump($cleared);exit;
+//        var_dump($cleared);exit;
 
         // сохранить в БД выбранные элементы (слоты)
-
-
-
-
-
-
-
-
-
-
 
 
 

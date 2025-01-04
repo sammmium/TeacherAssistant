@@ -4,14 +4,12 @@ namespace App\Http\Models\Tests;
 
 class TestFormStoreHelper
 {
-    private
-        $input,
-        $sub,
-        $group,
-        $type,
-        $selected,
-        $elements,
-        $tabindexes;
+    private $input;
+    private $sub;
+    private $group;
+    private $type;
+    private $elements = [];
+    private $tabindexes = [];
 
     public function __construct(array $input)
     {
@@ -33,26 +31,18 @@ class TestFormStoreHelper
     public function handler(): array
     {
         foreach ($this->input as $name => $value) {
-            if (strpos($name, 'checkbox_') !== false) {
-                $this->selected[str_replace('checkbox_', '', $name)] = $value;
-                unset($this->input[$name]);
-            }
-        }
 
-        foreach ($this->input as $name => $value) {
             if (strpos($name, 'tabindex_') !== false) {
                 $newName = str_replace('tabindex_', '', $name);
-                if (array_key_exists($newName, $this->selected)) {
+                if (!array_key_exists($newName, $this->tabindexes)) {
                     $this->tabindexes[$newName] = $value;
                 }
                 unset($this->input[$name]);
             }
-        }
 
-        foreach ($this->input as $name => $value) {
             if (strpos($name, 'name_') !== false) {
                 $newName = str_replace('name_', '', $name);
-                if (array_key_exists($newName, $this->selected)) {
+                if (!array_key_exists($newName, $this->elements)) {
                     $this->elements[$newName] = $value;
                 }
                 unset($this->input[$name]);
@@ -60,8 +50,7 @@ class TestFormStoreHelper
         }
 
         $result = [];
-
-        foreach ($this->selected as $name => $value) {
+        foreach ($this->tabindexes as $name => $value) {
             $result[$name] = [
                 'tabindex' => $this->tabindexes[$name],
                 'value' => $this->elements[$name],

@@ -12,9 +12,9 @@ abstract class WS implements WSInterface
         'teacher_id',
         'unit_id',
         'group_id',
-        'unit_group_id',
+        'unit_group_id',//hasnt
         'subject_id',
-        'unit_subject_id',
+        'unit_subject_id',//hasnt
         'pupil_id',
         'unit_group_pupil_id',
         'test_id',

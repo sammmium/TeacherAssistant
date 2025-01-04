@@ -29,7 +29,7 @@ return [
          * Login page
          */
         'login' => [
-            'title' => 'Страница входа',
+            'title' => 'Вход',
             'email' => 'Электронная почта',
             'password' => 'Пароль',
             'remember_me' => 'Запомнить меня',

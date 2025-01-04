@@ -123,7 +123,10 @@ class UnitsGroupsController extends MainController
         $year = date('Y');
         $teacher = Teacher::getTeacher();
         $unit = Unit::getUnit($teacher['id'], $year);
+//        $ug = UnitsGroups::getUnitGroup(['unit_id' => $unit['id'], 'group_id' => ])
         $ws = WorkStatus::get($teacher['user_id']);
+
+//        dd($teacher, $unit, $ws);
 
         return view('home.group.add', [
             'group_list' => $groupList,

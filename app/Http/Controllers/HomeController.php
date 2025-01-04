@@ -27,6 +27,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpWord\TemplateProcessor;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
+
 class HomeController extends MainController
 {
     use Helper;
@@ -44,7 +48,7 @@ class HomeController extends MainController
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Application|RedirectResponse|Redirector
      */
     public function index()
     {
